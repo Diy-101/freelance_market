@@ -1,12 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { OnboardingFlow } from "@/components/OnboardingFlow";
+import { TabNavigation } from "@/components/TabNavigation";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [showOnboarding, setShowOnboarding] = useState(true);
+
+  useEffect(() => {
+    // Check if user has completed onboarding before
+    const hasCompletedOnboarding = localStorage.getItem("onboarding-completed");
+    if (hasCompletedOnboarding) {
+      setShowOnboarding(false);
+      navigate("/feed");
+    }
+  }, [navigate]);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem("onboarding-completed", "true");
+    setShowOnboarding(false);
+    navigate("/feed");
+  };
+
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-subtle">
+      <TabNavigation />
     </div>
   );
 };

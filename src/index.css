@@ -2,41 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Telegram Mini App Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Telegram-inspired color palette */
+    --background: 213 45% 97%;
+    --foreground: 213 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 213 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 213 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Telegram blue theme */
+    --primary: 209 95% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 209 95% 65%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 213 45% 95%;
+    --secondary-foreground: 213 20% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 213 30% 93%;
+    --muted-foreground: 213 15% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 209 95% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 359 84% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --warning: 36 100% 50%;
+    --warning-foreground: 213 20% 15%;
+
+    --border: 213 30% 88%;
+    --input: 213 30% 95%;
+    --ring: 209 95% 55%;
+
+    --radius: 0.75rem;
+
+    /* Telegram-specific gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(213 30% 98%));
+    --gradient-subtle: linear-gradient(180deg, hsl(213 45% 98%), hsl(213 30% 95%));
+
+    /* Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(213 20% 15% / 0.08);
+    --shadow-medium: 0 4px 16px -4px hsl(213 20% 15% / 0.12);
+    --shadow-strong: 0 8px 32px -8px hsl(213 20% 15% / 0.18);
+    --shadow-telegram: 0 2px 12px hsl(209 95% 55% / 0.15);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-fast: all 0.15s ease-out;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +124,101 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Telegram-style animations */
+  .telegram-card {
+    @apply bg-card rounded-2xl p-6 shadow-[var(--shadow-soft)] border border-border/50;
+    background: var(--gradient-card);
+    transition: var(--transition-smooth);
+  }
+
+  .telegram-card:hover {
+    @apply shadow-[var(--shadow-medium)];
+    transform: translateY(-2px);
+  }
+
+  .telegram-button {
+    @apply bg-primary text-primary-foreground rounded-xl px-6 py-3 font-medium;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-telegram);
+    transition: var(--transition-spring);
+  }
+
+  .telegram-button:hover {
+    @apply shadow-[var(--shadow-strong)];
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  .telegram-button:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Tab navigation */
+  .tab-nav {
+    @apply bg-card border-t border-border/50 backdrop-blur-sm;
+    box-shadow: 0 -2px 16px hsl(213 20% 15% / 0.08);
+  }
+
+  .tab-item {
+    @apply flex flex-col items-center justify-center p-3 transition-colors;
+    transition: var(--transition-fast);
+  }
+
+  .tab-item.active {
+    @apply text-primary;
+  }
+
+  .tab-item:not(.active) {
+    @apply text-muted-foreground;
   }
 }
