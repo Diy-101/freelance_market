@@ -11,21 +11,24 @@ const onboardingCards = [
   {
     icon: Users,
     title: "Find Perfect Freelancers",
-    description: "Connect with skilled professionals from around the world. Browse profiles, reviews, and portfolios to find the perfect match for your project.",
-    color: "text-primary"
+    description:
+      "Connect with skilled professionals from around the world. Browse profiles, reviews, and portfolios to find the perfect match for your project.",
+    color: "text-primary",
   },
   {
     icon: Clock,
     title: "Fast & Efficient",
-    description: "Get your projects completed quickly with our streamlined process. Real-time communication and milestone tracking keep everything on schedule.",
-    color: "text-success"
+    description:
+      "Get your projects completed quickly with our streamlined process. Real-time communication and milestone tracking keep everything on schedule.",
+    color: "text-success",
   },
   {
     icon: ShieldCheck,
     title: "0% Commission",
-    description: "Keep 100% of your earnings! No hidden fees, no commission charges. What you earn is what you keep. Fair pricing for everyone.",
-    color: "text-warning"
-  }
+    description:
+      "Keep 100% of your earnings! No hidden fees, no commission charges. What you earn is what you keep. Fair pricing for everyone.",
+    color: "text-warning",
+  },
 ];
 
 export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
@@ -51,7 +54,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
             <div
               key={index}
               className={`h-2 w-8 rounded-full transition-all duration-300 ${
-                index <= currentCard ? 'bg-primary' : 'bg-border'
+                index <= currentCard ? "bg-primary" : "bg-border"
               }`}
             />
           ))}
@@ -60,10 +63,12 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
         {/* Card */}
         <Card className="telegram-card slide-up">
           <CardContent className="p-8 text-center space-y-6">
-            <div className={`inline-flex p-4 rounded-2xl bg-secondary/50 ${card.color}`}>
+            <div
+              className={`inline-flex p-4 rounded-2xl bg-secondary/50 ${card.color}`}
+            >
               <Icon size={32} />
             </div>
-            
+
             <div className="space-y-3">
               <h2 className="text-2xl font-bold text-foreground">
                 {card.title}
@@ -77,7 +82,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
         {/* Action buttons */}
         <div className="space-y-4">
-          <Button 
+          <Button
             onClick={nextCard}
             className="telegram-button w-full h-12 text-lg"
           >
@@ -89,16 +94,6 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
               </span>
             )}
           </Button>
-
-          {currentCard < onboardingCards.length - 1 && (
-            <Button 
-              variant="ghost" 
-              onClick={onComplete}
-              className="w-full text-muted-foreground"
-            >
-              Skip Introduction
-            </Button>
-          )}
         </div>
 
         {/* App title */}
