@@ -4,7 +4,8 @@
 
 /* HeroUI Setup */
 @plugin "./config/hero.ts";
-
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
 /* Telegram Mini App Design System */
 
 @layer base {
@@ -158,7 +159,7 @@
 
   .telegram-button {
     @apply bg-primary text-primary-foreground rounded-xl px-6 py-3 font-medium;
-    background: var(--gradient-primary);
+    background: var(--tg-theme-button-color);
     box-shadow: var(--shadow-telegram);
     transition: var(--transition-spring);
   }
