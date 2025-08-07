@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@heroui/react";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,9 @@ export default function Profile() {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [isEmployeeMode, setIsEmployeeMode] = useState(false);
+  const changeProfileRef = useRef(null);
+  const defaultPositionRef = useRef(null);
+
   const [profileData, setProfileData] = useState({
     name: "Alex Johnson",
     bio: "Full-stack developer with 5+ years of experience in React, Node.js, and cloud technologies.",
@@ -63,8 +66,25 @@ export default function Profile() {
     }
   };
 
+  useEffect(() => {
+    if (isEditing) {
+      changeProfileRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } else {
+      defaultPositionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [isEditing]);
+
   return (
-    <div className="min-h-screen bg-gradient-subtle pb-20">
+    <div
+      ref={defaultPositionRef}
+      className="min-h-screen bg-gradient-subtle pb-20"
+    >
       {/* Header */}
       <div className="bg-card border-b border-border/50 p-4 sticky top-0 z-40 backdrop-blur-sm">
         <div className="max-w-md mx-auto flex justify-between items-center">
@@ -109,9 +129,9 @@ export default function Profile() {
                     </div>
                   </div>
                   <Button
-                    variant="ghost"
+                    variant="solid"
                     size="sm"
-                    onClick={() => setIsEditing(!isEditing)}
+                    onPress={() => setIsEditing(!isEditing)}
                   >
                     <Edit3 size={16} />
                   </Button>
@@ -166,7 +186,7 @@ export default function Profile() {
                 </p>
               </div>
               <Button
-                onClick={toggleEmployeeMode}
+                onPress={toggleEmployeeMode}
                 variant={isEmployeeMode ? "solid" : "ghost"}
                 className={isEmployeeMode ? "telegram-button" : ""}
               >
@@ -191,7 +211,7 @@ export default function Profile() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {isEditing ? (
-                  <>
+                  <div ref={changeProfileRef}>
                     <div>
                       <Label htmlFor="name">Full Name</Label>
                       <Input
@@ -247,20 +267,20 @@ export default function Profile() {
                     </div>
                     <div className="flex gap-2">
                       <Button
-                        onClick={handleSaveProfile}
+                        onPress={handleSaveProfile}
                         className="telegram-button flex-1"
                       >
                         Save Changes
                       </Button>
                       <Button
                         variant="solid"
-                        onClick={() => setIsEditing(false)}
+                        onPress={() => setIsEditing(false)}
                         className="flex-1"
                       >
                         Cancel
                       </Button>
                     </div>
-                  </>
+                  </div>
                 ) : (
                   <div className="space-y-3">
                     <div className="flex justify-between">
