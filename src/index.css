@@ -159,7 +159,7 @@
 
   .telegram-button {
     @apply bg-primary text-primary-foreground rounded-xl px-6 py-3 font-medium;
-    background: var(--tg-theme-button-color);
+    background: var(--gradient-primary);
     box-shadow: var(--shadow-telegram);
     transition: var(--transition-spring);
   }
