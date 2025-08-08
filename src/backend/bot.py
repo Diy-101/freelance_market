@@ -1,6 +1,7 @@
 from aiogram import Dispatcher, Bot, Router
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand, WebhookInfo
+from aiogram.client.default import DefaultBotProperties
 
 import logging
 import os
@@ -12,7 +13,9 @@ telegram_router = Router(name="telegram_router")
 dp = Dispatcher()
 
 dp.include_router(telegram_router)
-bot = Bot(token=cfg.bot_token, parse_mode=ParseMode.HTML)
+bot = Bot(token=cfg.bot_token, default=DefaultBotProperties(
+    parse_mode=ParseMode.HTML,
+))
 
 # Functions
 async def check_webhook(my_bot: Bot) -> WebhookInfo | None:
@@ -23,7 +26,7 @@ async def check_webhook(my_bot: Bot) -> WebhookInfo | None:
         logging.error(f"App can't get webhook_info\nError: {e}")
 
 async def set_webhook(my_bot: Bot) -> None:
-    current_webhook = check_webhook(my_bot=my_bot)
+    current_webhook = await check_webhook(my_bot=my_bot)
     if cfg.debug:
         logging.debug(f"Current bot info: {current_webhook}")
 
