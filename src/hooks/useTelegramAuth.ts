@@ -7,12 +7,8 @@ export const useTelegramAuth = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const validUserData = await authUser(initData);
-        setUserData(validUserData);
-      } catch (err) {
-        console.log("Ошибка при проверке авторизации:", err);
-      }
+      const validUserData = await authUser(initData);
+      setUserData(validUserData);
     };
 
     fetchData();
