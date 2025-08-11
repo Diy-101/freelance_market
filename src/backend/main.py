@@ -15,6 +15,7 @@ async def lifespan(application: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(webhook_router)
+app.include_router(user_router)
 
 authx.handle_errors(app)
 if __name__ == "__main__":
