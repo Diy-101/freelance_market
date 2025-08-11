@@ -1,15 +1,15 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-import logging
-from bot import start_telegram
-from routers import telegram_router
+from src.utils.logger import logger
+from src.bot import start_telegram
+from src.webhook import telegram_router
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
-    logging.info("Start Application!!!")
+    logger.info("Start Application!!!")
     await start_telegram()
     yield
-    logging.info("⛔ Stop Application")
+    logger.info("⛔ Stop Application")
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(telegram_router)

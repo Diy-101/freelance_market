@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     my_telegram_token: str
 
     model_config = SettingsConfigDict(
-        env_file="./.env",
+        env_file=".env",
         env_file_encoding="utf-8"
     )
 
