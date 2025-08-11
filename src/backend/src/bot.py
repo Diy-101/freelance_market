@@ -27,6 +27,7 @@ async def check_webhook(my_bot: Bot) -> WebhookInfo | None:
 
 async def set_webhook(my_bot: Bot) -> None:
     current_webhook = await check_webhook(my_bot=my_bot)
+
     if cfg.debug:
         logger.debug(f"Current bot info: {current_webhook}")
 
@@ -37,8 +38,10 @@ async def set_webhook(my_bot: Bot) -> None:
             max_connections=40 if cfg.debug else 100,
             drop_pending_updates=current_webhook.pending_update_count > 0,
         )
+
         if cfg.debug:
             logger.debug(f"New bot webhook: {await check_webhook(my_bot=my_bot)}")
+
     except Exception as e:
         logger.error(f"Can't set webhook\nError: {e}")
 
@@ -46,6 +49,7 @@ async def set_commands(my_bot: Bot):
     commands = [
         BotCommand( command="/id", description="👋 Get my ID"),
     ]
+
     try:
         await my_bot.set_my_commands(commands)
     except Exception as e:

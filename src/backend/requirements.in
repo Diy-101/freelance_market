@@ -2,3 +2,5 @@ fastapi[standard]
 pydantic-settings
 uvicorn
 aiogram
+sqlalchemy
+authx[fastapi]

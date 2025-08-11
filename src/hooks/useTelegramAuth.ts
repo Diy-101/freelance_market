@@ -1,18 +1,13 @@
-import { useState, useEffect } from "react";
-import authUser from "@/api/auth";
+import { useState } from "react";
+import signIn from "@/api/signin";
 
 export const useTelegramAuth = () => {
-  const initData = window.Telegram.WebApp.initData;
   const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const validUserData = await authUser(initData);
-      setUserData(validUserData);
-    };
+  const auth = async (initData: string) => {
+    const res = await signIn(initData);
+    setUserData(res);
+  };
 
-    fetchData();
-  }, []);
-
-  return userData;
+  return { userData, auth };
 };

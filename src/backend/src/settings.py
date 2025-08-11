@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     webhook_url: str
     debug: bool
     my_telegram_token: str
+    database_url: str
+    secret_key_jwt: str
+    algorithm_jwt: str
 
     model_config = SettingsConfigDict(
         env_file=".env",

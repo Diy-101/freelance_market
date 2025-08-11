@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,10 +12,14 @@ const queryClient = new QueryClient();
 const UserContext = createContext(null);
 
 const App = () => {
-  const user = useTelegramAuth();
+  const { userData, auth } = useTelegramAuth();
+
+  useEffect(() => {
+    auth(window.Telegram.WebApp.initData);
+  }, []);
 
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={userData}>
       <HeroUIProvider>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
