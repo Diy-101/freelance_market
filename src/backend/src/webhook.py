@@ -9,13 +9,13 @@ from src.settings import get_settings
 cfg = get_settings()
 
 
-telegram_router = APIRouter(
+webhook = APIRouter(
     prefix="/api",
     tags=["root"],
     responses={404: {"description": "Not found!"}}
 )
 
-@telegram_router.post(cfg.webhook_path)
+@webhook.post(cfg.webhook_path)
 async def bot_webhook(
     update: dict,
     x_telegram_bot_api_secret_token: Annotated[str, Header()]
