@@ -8,7 +8,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
     tg_id: Mapped[int] = mapped_column(unique=True, index=True, nullable=False)
     is_bot: Mapped[bool | None] = None
-    first_name: str
+    first_name: Mapped[str]
     last_name: Mapped[str | None] = None
     username: Mapped[str | None] = None
     language_code: Mapped[str | None] = None

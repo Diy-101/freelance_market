@@ -4,6 +4,7 @@ from src.utils.logger import logger
 from src.bot import start_telegram
 from src.webhook import webhook_router
 from src.auth import authx
+from src.auth.routers import user_router
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
