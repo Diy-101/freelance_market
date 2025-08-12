@@ -35,8 +35,8 @@ export const AuthProvider = ({ children }) => {
         setUserData(data.user);
         setToken(data.access_token);
       } catch (error) {
-        console.error("Auth error:", error);
         setUserData(null);
+        return <div>{error}</div>;
       } finally {
         setLoading(false);
       }
