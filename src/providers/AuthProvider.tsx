@@ -12,24 +12,13 @@ export const AuthProvider = ({ children }) => {
     window.Telegram?.WebApp?.ready();
 
     const trySignIn = async () => {
-      const initData = window.Telegram?.WebApp?.initData || "";
-      console.log("Init data received:", initData);
-
-      if (!initData) {
-        console.warn(
-          "⚠️ Init data is empty. Check how the app is opened in Telegram."
-        );
-        setLoading(false);
-        return;
-      }
-
       try {
         const response = await fetch(`${BASE_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ init_data: initData }),
+          body: JSON.stringify({ init_data: window.Telegram?.WebApp.initData }),
         });
 
         if (!response.ok)
