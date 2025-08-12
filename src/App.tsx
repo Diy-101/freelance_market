@@ -1,4 +1,4 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,32 +7,35 @@ import { HeroUIProvider } from "@heroui/react";
 import { RouterProvider } from "react-router-dom";
 import routers from "@/routers/pages";
 import { useTelegramAuth } from "./hooks/useTelegramAuth";
+import RequiredTelegram from "./components/RequiredTelegram";
 
 const queryClient = new QueryClient();
 const UserContext = createContext(null);
 
 const App = () => {
-  const { userData, auth } = useTelegramAuth();
+  const { userData, validate } = useTelegramAuth();
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready(); // сигнал Telegram, что всё загружено
-      auth(window.Telegram.WebApp.initData);
+      validate(window.Telegram.WebApp.initData);
     }
   }, []);
 
   return (
-    <UserContext.Provider value={userData}>
-      <HeroUIProvider>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <RouterProvider router={routers} />
-          </TooltipProvider>
-        </QueryClientProvider>
-      </HeroUIProvider>
-    </UserContext.Provider>
+    <RequiredTelegram>
+      <UserContext.Provider value={userData}>
+        <HeroUIProvider>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <RouterProvider router={routers} />
+            </TooltipProvider>
+          </QueryClientProvider>
+        </HeroUIProvider>
+      </UserContext.Provider>
+    </RequiredTelegram>
   );
 };
 
