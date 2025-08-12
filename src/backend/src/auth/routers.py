@@ -40,9 +40,10 @@ async def signin(
         db.commit()
         db.refresh(new_user)
 
-    access_token = authx.create_access_token(uid=user_data.id)
-    refresh_token = authx.create_refresh_token(uid=user_data.id)
+    access_token = authx.create_access_token(uid=user_data["tg_id"])
+    refresh_token = authx.create_refresh_token(uid=user_data["tg_id"])
 
+    user_data["id"] = user_data.pop("tg_id")
     return SignIn(
         access_token=access_token,
         refresh_token=refresh_token,
