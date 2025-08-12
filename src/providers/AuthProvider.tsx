@@ -6,9 +6,23 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const signIn = async (initData: string) => {
+    window.Telegram?.WebApp?.ready();
+
+    const trySignIn = async () => {
+      const initData = window.Telegram?.WebApp?.initData || "";
+      console.log("Init data received:", initData);
+
+      if (!initData) {
+        console.warn(
+          "⚠️ Init data is empty. Check how the app is opened in Telegram."
+        );
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch(`${BASE_URL}/api/auth/login`, {
           method: "POST",
@@ -25,17 +39,29 @@ export const AuthProvider = ({ children }) => {
         setUserData(data.user);
         setToken(data.access_token);
       } catch (error) {
+        console.error("Auth error:", error);
         setUserData(null);
-        console.error(error);
-        return <div>Error {error}</div>;
+      } finally {
+        setLoading(false);
       }
     };
 
-    signIn(window.Telegram.WebApp.initData);
+    // Иногда на мобильном initData появляется с задержкой
+    const timer = setTimeout(trySignIn, 300);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  if (userData === null) {
+  if (loading) {
     return <div>Загрузка...</div>;
+  }
+
+  if (!userData) {
+    return (
+      <div>
+        Ошибка авторизации. Пожалуйста, откройте приложение из Telegram.
+      </div>
+    );
   }
 
   return (
