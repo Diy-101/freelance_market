@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         setUserData(null);
         console.error(error);
+        return <div>Error {error}</div>;
       }
     };
 
