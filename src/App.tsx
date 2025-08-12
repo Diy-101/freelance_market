@@ -14,17 +14,15 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <RequiredTelegram>
-      <AuthProvider>
-        <HeroUIProvider>
-          <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <RouterProvider router={routers} />
-            </TooltipProvider>
-          </QueryClientProvider>
-        </HeroUIProvider>
-      </AuthProvider>
+      <HeroUIProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <RouterProvider router={routers} />
+          </TooltipProvider>
+        </QueryClientProvider>
+      </HeroUIProvider>
     </RequiredTelegram>
   );
 };
