@@ -9,6 +9,7 @@ from src.utils.database import get_db
 from src.auth import authx
 from src.auth.schemas import SignIn, InitData
 from src.auth.crud import get_user, create_user
+from src.utils.logger import logger
 
 user_router = APIRouter(
     prefix="/api/auth",
@@ -16,7 +17,7 @@ user_router = APIRouter(
 )
 
 
-@user_router.post("/signin")
+@user_router.post("/login")
 async def validate_user(
     data: InitData,
     cfg: Settings = Depends(get_settings),
@@ -41,12 +42,14 @@ async def validate_user(
         user_data_dict = user_data.model_dump()
         filtered_db_data = {k: db_data[k] for k in user_data_dict.keys()}
         if user_data_dict != filtered_db_data:
+            if cfg.debug:
+                logger.info(f"Changing user data")
             for field, value in user_data_dict.items():
                 if hasattr(user, field):
                     setattr(user, field, value)
             db.commit()
 
-    access_token = authx.create_access_token(uid=int(user_data.id))
+    access_token = authx.create_access_token(uid=str(user_data.id))
     return SignIn(
         user=user_data,
         access_token=access_token,
