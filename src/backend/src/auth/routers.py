@@ -32,7 +32,7 @@ async def signin(
     # Добавление пользователя в БД
     user = db.execute(select(User).where(User.tg_id == user_data.id)).scalar_one_or_none()
     user_data_dict = user_data.model_dump()
-    user_data_dict["tg_id"] = user_data_dict.pop("id")
+    user_data_dict["tg_id"] = str(user_data_dict.pop("id"))
 
     if not user:
         new_user = User(**user_data_dict)
@@ -44,6 +44,7 @@ async def signin(
     access_token = authx.create_access_token(uid=user_data_dict["id"])
     refresh_token = authx.create_refresh_token(uid=user_data_dict["id"])
 
+    user_data_dict["id"] = int(user_data_dict.pop("id"))
     return SignIn(
         access_token=access_token,
         refresh_token=refresh_token,
