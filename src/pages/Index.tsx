@@ -17,7 +17,6 @@ const Index = () => {
   }, [navigate]);
 
   const handleOnboardingComplete = () => {
-    localStorage.setItem("onboarding-completed", "true");
     setShowOnboarding(false);
     navigate("/feed");
   };
