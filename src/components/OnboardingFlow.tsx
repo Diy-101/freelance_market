@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Users, Clock, ShieldCheck } from "lucide-react";
+import "@lottiefiles/lottie-player";
 
 interface OnboardingFlowProps {
   onComplete: () => void;
@@ -41,7 +42,6 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
       onComplete();
     }
   };
-
   const card = onboardingCards[currentCard];
   const Icon = card.icon;
 
@@ -73,6 +73,19 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
               <h2 className="text-2xl font-bold text-foreground">
                 {card.title}
               </h2>
+
+              {/* Стикер под заголовком */}
+              <div className="my-4 flex justify-center">
+                <tgs-player
+                  autoplay
+                  loop
+                  mode="normal"
+                  src="/stickers/flame.tgs"
+                  style={{ width: 120, height: 120 }}
+                  className="rounded-lg shadow-lg"
+                ></tgs-player>
+              </div>
+
               <p className="text-muted-foreground leading-relaxed">
                 {card.description}
               </p>
