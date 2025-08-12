@@ -13,12 +13,19 @@ export const AuthProvider = ({ children }) => {
 
     const trySignIn = async () => {
       try {
+        // Проверяем наличие initData
+        const initData = window.Telegram?.WebApp?.initData;
+
+        if (!initData) {
+          throw new Error("No initData available");
+        }
+
         const response = await fetch(`${BASE_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ init_data: window.Telegram?.WebApp.initData }),
+          body: JSON.stringify({ init_data: initData }),
         });
 
         if (!response.ok)
@@ -35,19 +42,58 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    // Иногда на мобильном initData появляется с задержкой
-    const timer = setTimeout(trySignIn, 300);
+    // Ждем немного, пока WebApp полностью инициализируется
+    const checkInitData = () => {
+      let attempts = 0;
+      const maxAttempts = 10;
 
-    return () => clearTimeout(timer);
+      const check = () => {
+        const initData = window.Telegram?.WebApp?.initData;
+
+        if (initData) {
+          trySignIn();
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(check, 300);
+        } else {
+          console.error("Init data not available after multiple attempts");
+          setLoading(false);
+        }
+      };
+
+      check();
+    };
+
+    checkInitData();
   }, []);
 
   if (loading) {
-    return <div>Загрузка...</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        Загрузка...
+      </div>
+    );
   }
 
   if (!userData) {
     return (
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          padding: "20px",
+          textAlign: "center",
+        }}
+      >
         Ошибка авторизации. Пожалуйста, откройте приложение из Telegram.
       </div>
     );
