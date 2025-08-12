@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center w-screen h-screen">
         <Spinner size="m" />
       </div>
     );
