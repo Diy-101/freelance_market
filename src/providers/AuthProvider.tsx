@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     signIn(window.Telegram.WebApp.initData);
   }, []);
 
-  if (userData === undefined) {
+  if (userData === null) {
     return <div>Загрузка...</div>;
   }
 
