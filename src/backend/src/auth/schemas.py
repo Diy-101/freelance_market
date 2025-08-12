@@ -5,3 +5,6 @@ class SignIn(BaseModel):
     access_token: str
     refresh_token: str
     user: WebAppUser
+
+class InitData(BaseModel):
+    init_data: str

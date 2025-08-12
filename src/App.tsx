@@ -15,7 +15,10 @@ const App = () => {
   const { userData, auth } = useTelegramAuth();
 
   useEffect(() => {
-    auth(window.Telegram.WebApp.initData);
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready(); // сигнал Telegram, что всё загружено
+      auth(window.Telegram.WebApp.initData);
+    }
   }, []);
 
   return (

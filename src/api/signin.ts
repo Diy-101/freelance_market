@@ -1,13 +1,13 @@
 export default async function signIn(initData: string) {
   try {
     const response = await fetch(
-      "https://2fd83bcd4890.ngrok-free.app/api/auth/signin",
+      "https://35vxmdvw-8000.euw.devtunnels.ms/api/auth/signin",
       {
         method: "POST",
         headers: {
-          "Content-Type": "text/plain",
+          "Content-Type": "application/json",
         },
-        body: initData,
+        body: JSON.stringify({ init_data: initData }),
       }
     );
 

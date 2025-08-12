@@ -7,7 +7,8 @@ from src.settings import get_settings, Settings
 from src.utils.database import get_db
 from src.auth.models import User
 from src.auth import authx
-from src.auth.schemas import SignIn
+from src.auth.schemas import SignIn, InitData
+from src.utils.logger import logger
 
 user_router = APIRouter(
     prefix="/api/auth",
@@ -16,17 +17,15 @@ user_router = APIRouter(
 
 @user_router.post("/signin")
 async def signin(
-        request: Request,
+        data: InitData,
         cfg: Settings = Depends(get_settings),
         db: Session = Depends(get_db)
 ):
-    body_bytes = await request.body()
-    body_data = body_bytes.decode("utf-8")
-
     try:
         # Проверка подписи
-        init_data: WebAppInitData = safe_parse_webapp_init_data(token=cfg.bot_token, init_data=body_data)
-        user_data: WebAppUser = init_data.user
+        logger.info("RAW init_data:", data.init_data)
+        init_data = safe_parse_webapp_init_data(token=cfg.bot_token, init_data=data.init_data)
+        user_data = init_data.user
     except Exception as err:
         raise HTTPException(status_code=400, detail=f"Invalid initData: {err}")
 
