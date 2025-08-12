@@ -1,7 +1,7 @@
 export default async function signIn(initData: string) {
   try {
     const response = await fetch(
-      "https://35vxmdvw-8000.euw.devtunnels.ms/api/auth/signin",
+      "https://22d0962b5aec.ngrok-free.app/api/auth/signin",
       {
         method: "POST",
         headers: {
