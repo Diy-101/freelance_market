@@ -1,4 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
+import { Spinner } from "@telegram-apps/telegram-ui";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AuthContext = createContext(null);
 
@@ -9,23 +12,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const SignIn = async () => {
       try {
-        // Проверяем наличие initData
-        const initData = window.Telegram.WebApp.initData;
-
-        if (!initData) {
-          throw new Error("No initData available");
-        }
-
-        const response = await fetch(
-          `https://22d0962b5aec.ngrok-free.app/api/auth/login`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ init_data: initData }),
-          }
-        );
+        const response = await fetch(`${BASE_URL}/api/auth/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            init_data: window.Telegram.WebApp.initData,
+          }),
+        });
 
         if (!response.ok)
           throw new Error(`HTTP request Error: ${response.status}`);
@@ -46,15 +41,8 @@ export const AuthProvider = ({ children }) => {
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        Загрузка...
+      <div className="flex items-center justify-center">
+        <Spinner size="m" />
       </div>
     );
   }
