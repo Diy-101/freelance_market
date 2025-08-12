@@ -31,19 +31,19 @@ async def signin(
 
     # Добавление пользователя в БД
     user = db.execute(select(User).where(User.tg_id == user_data.id)).scalar_one_or_none()
+    user_data_dict = user_data.model_dump()
     if not user:
-        user_data = user_data.model_dump()
-        user_data["tg_id"] = user_data.pop("id")
+        user_data_dict["tg_id"] = user_data_dict.pop("id")
 
-        new_user = User(**user_data)
+        new_user = User(**user_data_dict)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
 
-    access_token = authx.create_access_token(uid=user_data["tg_id"])
-    refresh_token = authx.create_refresh_token(uid=user_data["tg_id"])
+    user_data_dict["id"] = user_data_dict.pop("tg_id")
+    access_token = authx.create_access_token(uid=user_data["id"])
+    refresh_token = authx.create_refresh_token(uid=user_data["id"])
 
-    user_data["id"] = user_data.pop("tg_id")
     return SignIn(
         access_token=access_token,
         refresh_token=refresh_token,
