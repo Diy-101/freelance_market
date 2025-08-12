@@ -5,7 +5,6 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
-  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,10 +32,10 @@ export const AuthProvider = ({ children }) => {
 
         const data = await response.json();
         setUserData(data.user);
-        setToken(data.access_token);
+        localStorage.setItem("token", data.access_token);
       } catch (error) {
         setUserData(null);
-        return <div>{error}</div>;
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -82,27 +81,8 @@ export const AuthProvider = ({ children }) => {
     );
   }
 
-  if (!userData) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          padding: "20px",
-          textAlign: "center",
-        }}
-      >
-        Ошибка авторизации. Пожалуйста, откройте приложение из Telegram.
-      </div>
-    );
-  }
-
   return (
-    <AuthContext.Provider value={{ userData, token }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ userData }}>{children}</AuthContext.Provider>
   );
 };
 
