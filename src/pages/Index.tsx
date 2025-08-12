@@ -7,14 +7,14 @@ const Index = () => {
   const navigate = useNavigate();
   const [showOnboarding, setShowOnboarding] = useState(true);
 
-  useEffect(() => {
-    // Check if user has completed onboarding before
-    const hasCompletedOnboarding = localStorage.getItem("onboarding-completed");
-    if (hasCompletedOnboarding) {
-      setShowOnboarding(false);
-      navigate("/feed");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   // Check if user has completed onboarding before
+  //   const hasCompletedOnboarding = localStorage.getItem("onboarding-completed");
+  //   if (hasCompletedOnboarding) {
+  //     setShowOnboarding(false);
+  //     navigate("/feed");
+  //   }
+  // }, [navigate]);
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
