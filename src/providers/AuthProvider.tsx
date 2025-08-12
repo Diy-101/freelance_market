@@ -33,6 +33,10 @@ export const AuthProvider = ({ children }) => {
     signIn(window.Telegram.WebApp.initData);
   }, []);
 
+  if (userData === undefined) {
+    return <div>Загрузка...</div>;
+  }
+
   return (
     <AuthContext.Provider value={{ userData, token }}>
       {children}
