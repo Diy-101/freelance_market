@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Users, Clock, ShieldCheck } from "lucide-react";
+import flameAnimation from "@/../public/stickers/flame.json";
+import StickerPlayer from "./StickerPlayer";
 
 interface OnboardingFlowProps {
   onComplete: () => void;
@@ -67,7 +69,11 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
             >
               <Icon size={32} />
             </div>
-
+            <StickerPlayer
+              animationData={flameAnimation}
+              width={120}
+              height={120}
+            />
             <div className="space-y-3">
               <h2 className="text-2xl font-bold text-foreground">
                 {card.title}
