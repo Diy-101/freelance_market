@@ -29,10 +29,13 @@ async def signin(
     except Exception as err:
         raise HTTPException(status_code=400, detail=f"Invalid initData: {err}")
 
-
+    # Добавление пользователя в БД
     user = db.execute(select(User).where(User.tg_id == user_data.id)).scalar_one_or_none()
     if not user:
-        new_user = User(**user_data.model_dump())
+        user_data = user_data.model_dump()
+        user_data["tg_id"] = user_data.pop("id")
+
+        new_user = User(**user_data)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
