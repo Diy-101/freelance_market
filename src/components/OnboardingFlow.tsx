@@ -81,8 +81,6 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
                   loop
                   mode="normal"
                   src="/stickers/flame.tgs"
-                  style={{ width: 120, height: 120 }}
-                  className="rounded-lg shadow-lg"
                 ></tgs-player>
               </div>
 
