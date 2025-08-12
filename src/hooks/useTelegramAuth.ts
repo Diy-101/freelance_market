@@ -4,9 +4,9 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const useTelegramAuth = () => {
   const [userData, setUserData] = useState(null);
 
-  const validate = async (initData: string) => {
+  const signIn = async (initData: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/auth/validate`, {
+      const response = await fetch(`${BASE_URL}/api/auth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,5 +25,5 @@ export const useTelegramAuth = () => {
     }
   };
 
-  return { userData, validate };
+  return { userData, signIn };
 };

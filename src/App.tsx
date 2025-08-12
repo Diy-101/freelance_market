@@ -13,12 +13,12 @@ const queryClient = new QueryClient();
 const UserContext = createContext(null);
 
 const App = () => {
-  const { userData, validate } = useTelegramAuth();
+  const { userData, signIn } = useTelegramAuth();
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready(); // сигнал Telegram, что всё загружено
-      validate(window.Telegram.WebApp.initData);
+      signIn(window.Telegram.WebApp.initData);
     }
   }, []);
 

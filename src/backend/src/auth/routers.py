@@ -1,54 +1,53 @@
-from fastapi import APIRouter, Request, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from aiogram.utils.web_app import safe_parse_webapp_init_data, WebAppInitData, WebAppUser
+from sqlalchemy.orm.attributes import instance_dict
+from aiogram.utils.web_app import safe_parse_webapp_init_data
 
 from src.settings import get_settings, Settings
 from src.utils.database import get_db
-from src.auth.models import User
 from src.auth import authx
 from src.auth.schemas import SignIn, InitData
-from src.utils.logger import logger
+from src.auth.crud import get_user, create_user
 
 user_router = APIRouter(
     prefix="/api/auth",
     tags=["auth"],
 )
 
-@user_router.post("/validate")
+
+@user_router.post("/signin")
 async def validate_user(
-        data: InitData,
-        cfg: Settings = Depends(get_settings),
-) -> WebAppUser:
+    data: InitData,
+    cfg: Settings = Depends(get_settings),
+    db: Session = Depends(get_db),
+) -> SignIn:
     try:
         # Проверка подписи
-        init_data = safe_parse_webapp_init_data(token=cfg.bot_token, init_data=data.init_data)
+        init_data = safe_parse_webapp_init_data(
+            token=cfg.bot_token, init_data=data.init_data
+        )
         user_data = init_data.user
     except Exception as err:
         raise HTTPException(status_code=400, detail=f"Invalid initData: {err}")
 
-    return user_data
-    # # Добавление пользователя в БД
-    # user = db.execute(select(User).where(User.tg_id == user_data.id)).scalar_one_or_none()
-    # user_data_dict = user_data.model_dump()
-    # user_data_dict["tg_id"] = str(user_data_dict.pop("id"))
-    #
-    # if not user:
-    #     new_user = User(**user_data_dict)
-    #     db.add(new_user)
-    #     db.commit()
-    #     db.refresh(new_user)
-    #
-    # user_data_dict["id"] = user_data_dict.pop("tg_id")
-    # access_token = authx.create_access_token(uid=user_data_dict["id"])
-    # refresh_token = authx.create_refresh_token(uid=user_data_dict["id"])
-    #
-    # user_data_dict["id"] = int(user_data_dict.pop("id"))
-    # return SignIn(
-    #     access_token=access_token,
-    #     refresh_token=refresh_token,
-    #     user=user_data
-    # )
+    # Добавление пользователя в БД
+    user = get_user(db, user_data.id)
+    if user is None:
+        create_user(db, user_data)
+    else:
+        # Изменение данных, если они изменились в TG
+        db_data = instance_dict(user)
+        user_data_dict = user_data.model_dump()
+        filtered_db_data = {k: db_data[k] for k in user_data_dict.keys()}
+        if user_data_dict != filtered_db_data:
+            for field, value in user_data_dict.items():
+                if hasattr(user, field):
+                    setattr(user, field, value)
+            db.commit()
 
-
-
+    access_token = authx.create_access_token(uid=int(user_data.id))
+    return SignIn(
+        user=user_data,
+        access_token=access_token,
+    )
