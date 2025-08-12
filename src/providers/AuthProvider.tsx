@@ -8,9 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.Telegram?.WebApp?.ready();
-
-    const trySignIn = async () => {
+    const SignIn = async () => {
       try {
         // Проверяем наличие initData
         const initData = window.Telegram?.WebApp?.initData;
@@ -41,29 +39,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    // Ждем немного, пока WebApp полностью инициализируется
-    const checkInitData = () => {
-      let attempts = 0;
-      const maxAttempts = 10;
-
-      const check = () => {
-        const initData = window.Telegram?.WebApp?.initData;
-
-        if (initData) {
-          trySignIn();
-        } else if (attempts < maxAttempts) {
-          attempts++;
-          setTimeout(check, 300);
-        } else {
-          console.error("Init data not available after multiple attempts");
-          setLoading(false);
-        }
-      };
-
-      check();
-    };
-
-    checkInitData();
+    SignIn();
   }, []);
 
   if (loading) {

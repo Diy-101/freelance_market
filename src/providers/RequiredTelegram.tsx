@@ -1,8 +1,8 @@
 import React from "react";
 
 export default function RequiredTelegram({ children }) {
+  window.Telegram?.WebApp?.ready();
   const tg = window.Telegram?.WebApp;
-
   const isTelegram = tg && tg.initData;
 
   if (!isTelegram) {
