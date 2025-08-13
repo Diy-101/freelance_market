@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@heroui/react";
+import { Button } from "@telegram-apps/telegram-ui";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -92,7 +92,7 @@ export default function Profile() {
             <h1 className="text-2xl font-bold text-foreground">Profile</h1>
             <p className="text-sm text-muted-foreground">Manage your account</p>
           </div>
-          <Button isIconOnly size="sm" className="rounded-sm">
+          <Button size="s" className="rounded-sm">
             <Settings size={20} />
           </Button>
         </div>
@@ -128,11 +128,7 @@ export default function Profile() {
                       </span>
                     </div>
                   </div>
-                  <Button
-                    variant="solid"
-                    size="sm"
-                    onPress={() => setIsEditing(!isEditing)}
-                  >
+                  <Button size="s" onClick={() => setIsEditing(!isEditing)}>
                     <Edit3 size={16} />
                   </Button>
                 </div>
@@ -186,8 +182,7 @@ export default function Profile() {
                 </p>
               </div>
               <Button
-                onPress={toggleEmployeeMode}
-                variant={isEmployeeMode ? "solid" : "ghost"}
+                onClick={toggleEmployeeMode}
                 className={isEmployeeMode ? "telegram-button" : ""}
               >
                 {isEmployeeMode ? "Active" : "Enable"}
@@ -267,14 +262,13 @@ export default function Profile() {
                     </div>
                     <div className="flex gap-2">
                       <Button
-                        onPress={handleSaveProfile}
+                        onClick={handleSaveProfile}
                         className="telegram-button flex-1"
                       >
                         Save Changes
                       </Button>
                       <Button
-                        variant="solid"
-                        onPress={() => setIsEditing(false)}
+                        onClick={() => setIsEditing(false)}
                         className="flex-1"
                       >
                         Cancel
@@ -364,9 +358,7 @@ export default function Profile() {
                     </Badge>
                   ))}
                 </div>
-                <Button variant="solid" className="w-full mt-4">
-                  Add More Skills
-                </Button>
+                <Button className="w-full mt-4">Add More Skills</Button>
               </CardContent>
             </Card>
           </TabsContent>
