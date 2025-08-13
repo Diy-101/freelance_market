@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@telegram-apps/telegram-ui";
+import { Button } from "@heroui/react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -92,7 +92,7 @@ export default function Profile() {
             <h1 className="text-2xl font-bold text-foreground">Profile</h1>
             <p className="text-sm text-muted-foreground">Manage your account</p>
           </div>
-          <Button size="s" className="rounded-sm">
+          <Button size="sm" className="rounded-sm">
             <Settings size={20} />
           </Button>
         </div>
@@ -128,7 +128,7 @@ export default function Profile() {
                       </span>
                     </div>
                   </div>
-                  <Button size="s" onClick={() => setIsEditing(!isEditing)}>
+                  <Button size="sm" onClick={() => setIsEditing(!isEditing)}>
                     <Edit3 size={16} />
                   </Button>
                 </div>
