@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Users, Clock, ShieldCheck } from "lucide-react";
-import flameAnimation from "/stickers/flame.json?url";
+import flameAnimation from "@/assets/stickers/flame.json";
 import StickerPlayer from "./StickerPlayer";
 
 interface OnboardingFlowProps {
