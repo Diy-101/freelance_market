@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RequiredTelegram from "@/providers/RequiredTelegram";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { HeroUIProvider } from "@heroui/react";
+
 export const Providers = ({ children }) => {
   const queryClient = new QueryClient();
   return (
