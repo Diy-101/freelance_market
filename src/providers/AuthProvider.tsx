@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { Spinner } from "@telegram-apps/telegram-ui";
+import { Spinner } from "@heroui/react";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center w-screen h-screen">
-        <Spinner size="m" className="text-primary" />
+        <Spinner size="lg" className="text-primary" />
       </div>
     );
   }

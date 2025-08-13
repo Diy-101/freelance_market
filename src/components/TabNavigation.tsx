@@ -19,12 +19,12 @@ export const TabNavigation = () => {
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = location.pathname === tab.path;
-          
+
           return (
             <button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className={`tab-item ${isActive ? 'active' : ''}`}
+              className={`tab-item ${isActive ? "active" : ""}`}
             >
               <Icon size={20} className="mb-1" />
               <span className="text-xs font-medium">{tab.label}</span>
