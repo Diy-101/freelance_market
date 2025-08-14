@@ -4,7 +4,6 @@ import { ChevronRight, Users, Clock, ShieldCheck } from "lucide-react";
 import deal_duck from "@/assets/stickers/deal_duck.json";
 import fast_duck from "@/assets/stickers/fast_duck.json";
 import money_duck from "@/assets/stickers/money_duck.json";
-import test from "@/assets/stickers/flame.json";
 import StickerPlayer from "./StickerPlayer";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/react";
 interface OnboardingFlowProps {
