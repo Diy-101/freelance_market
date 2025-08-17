@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import instance_dict
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
 from src.settings import get_settings, Settings
-from src.utils.database import get_db
+from src.database import get_db
 from src.auth import authx
 from src.auth.schemas import SignIn, InitData
 from src.auth.crud import get_user, create_user

@@ -7,8 +7,8 @@ from src.bot import start_telegram
 from src.webhook import webhook_router
 from src.auth import authx
 from src.auth.routers import user_router
-from src.utils.database import Base, engine
-from src.auth.models import User
+from src.database import Base, engine
+
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
