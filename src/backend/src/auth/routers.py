@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
 from src.settings import get_settings, Settings
-from src.utils.logger import logger
 from src.auth import authx
 from src.auth.crud import get_user, create_user, update_user
 from src.auth.schemas import InitDataSchema, LoginSchema, UserSchema
+from src.utils.logger import logger
 
 user_router = APIRouter(
     prefix="/api/auth",
@@ -25,7 +25,7 @@ async def validate_user(
         )
     except Exception as err:
         raise HTTPException(status_code=400, detail=f"Invalid initData: {err}")
-
+    logger.debug(f"init_data: {init_data}")
     user_data = init_data.user.model_dump()
 
     # Добавление пользователя в БД

@@ -7,13 +7,14 @@ from src.bot import start_telegram
 from src.webhook import webhook_router
 from src.auth import authx
 from src.auth.routers import user_router
-from src.database import Base, engine
+from src.database import Base, engine, init_models
 
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
     logger.info("Start Application!!!")
     await start_telegram()
+    await init_models()
     yield
     logger.info("⛔ Stop Application")
 
@@ -29,7 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
 authx.handle_errors(app)
 if __name__ == "__main__":
     import uvicorn
