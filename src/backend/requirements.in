@@ -6,3 +6,6 @@ uvicorn
 aiogram
 sqlalchemy
 authx
+pytest
+pytest-asyncio
+httpx

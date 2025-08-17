@@ -25,7 +25,6 @@ async def validate_user(
         )
     except Exception as err:
         raise HTTPException(status_code=400, detail=f"Invalid initData: {err}")
-    logger.debug(f"init_data: {init_data}")
     user_data = init_data.user.model_dump()
 
     # Добавление пользователя в БД

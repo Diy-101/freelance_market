@@ -28,8 +28,7 @@ async def create_user(user_data: dict[str, Any]) -> UserModel:
             allows_write_to_pm=user_data["allows_write_to_pm"],
             photo_url=user_data["photo_url"],
         )
-        stmt = insert(UserModel).values([new_user])
-        await session.execute(stmt)
+        session.add(new_user)
         await session.commit()
         await session.refresh(new_user)
         return new_user

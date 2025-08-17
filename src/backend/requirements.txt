@@ -74,6 +74,7 @@ httptools==0.6.4
     # via uvicorn
 httpx==0.28.1
     # via
+    #   -r requirements.in
     #   fastapi
     #   fastapi-cloud-cli
 idna==3.10
@@ -82,6 +83,8 @@ idna==3.10
     #   email-validator
     #   httpx
     #   yarl
+iniconfig==2.1.0
+    # via pytest
 itsdangerous==2.2.0
     # via authx
 jinja2==3.1.6
@@ -98,6 +101,10 @@ multidict==6.6.3
     # via
     #   aiohttp
     #   yarl
+packaging==25.0
+    # via pytest
+pluggy==1.6.0
+    # via pytest
 propcache==0.3.2
     # via
     #   aiohttp
@@ -122,9 +129,17 @@ pydantic-settings==2.10.1
     #   -r requirements.in
     #   authx
 pygments==2.19.2
-    # via rich
+    # via
+    #   pytest
+    #   rich
 pyjwt[crypto]==2.10.1
     # via authx
+pytest==8.4.1
+    # via
+    #   -r requirements.in
+    #   pytest-asyncio
+pytest-asyncio==1.1.0
+    # via -r requirements.in
 python-dateutil==2.9.0.post0
     # via authx
 python-dotenv==1.1.1

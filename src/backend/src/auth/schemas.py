@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class InitDataSchema(BaseModel):
     init_data: str
@@ -15,6 +15,10 @@ class UserSchema(BaseModel):
     added_to_attachment_menu: bool | None = None
     allows_write_to_pm: bool | None = None
     photo_url: str | None = None
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
 
 
 class LoginSchema(BaseModel):

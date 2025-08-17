@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     database_url: str
     secret_key_jwt: str
     algorithm_jwt: str
-
+    mock_user: str
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8"
