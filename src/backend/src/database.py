@@ -12,13 +12,6 @@ cfg = get_settings()
 engine = create_async_engine(cfg.database_url)
 SessionLocal = async_sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 class Base(DeclarativeBase):
     pass
 

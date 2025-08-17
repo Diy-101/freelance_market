@@ -1,14 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from sqlalchemy.orm.attributes import instance_dict
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
 from src.settings import get_settings, Settings
-from src.database import get_db
-from src.auth import authx
-from src.auth.schemas import SignIn, InitData
-from src.auth.crud import get_user, create_user
 from src.utils.logger import logger
+from src.auth import authx
+from src.auth.crud import get_user, create_user, update_user
+from src.auth.schemas import InitDataSchema, LoginSchema, UserSchema
 
 user_router = APIRouter(
     prefix="/api/auth",
@@ -18,38 +15,34 @@ user_router = APIRouter(
 
 @user_router.post("/login")
 async def validate_user(
-    data: InitData,
+    data: InitDataSchema,
     cfg: Settings = Depends(get_settings),
-    db: Session = Depends(get_db),
-) -> SignIn:
+) -> LoginSchema:
     try:
-        # Проверка подписи
+        # Check signature
         init_data = safe_parse_webapp_init_data(
             token=cfg.bot_token, init_data=data.init_data
         )
-        user_data = init_data.user
     except Exception as err:
         raise HTTPException(status_code=400, detail=f"Invalid initData: {err}")
 
+    user_data = init_data.user.model_dump()
+
     # Добавление пользователя в БД
-    user = get_user(db, user_data.id)
-    if user is None:
-        create_user(db, user_data)
+    user_model = await get_user(user_data['id'])
+    if user_model is None:
+        await create_user(user_data)
     else:
         # Изменение данных, если они изменились в TG
-        db_data = instance_dict(user)
-        user_data_dict = user_data.model_dump()
-        filtered_db_data = {k: db_data[k] for k in user_data_dict.keys()}
-        if user_data_dict != filtered_db_data:
+        current_data = UserSchema(**user_model.__dict__).model_dump()
+        if current_data != user_data:
             if cfg.debug:
-                logger.info(f"Changing user data")
-            for field, value in user_data_dict.items():
-                if hasattr(user, field):
-                    setattr(user, field, value)
-            db.commit()
+                logger.info("User data differs from current data")
+            await update_user(user_data, user_model)
 
-    access_token = authx.create_access_token(uid=str(user_data.id))
-    return SignIn(
-        user=user_data,
+    # Создание токена по id
+    access_token = authx.create_access_token(uid=str(user_data["id"]))
+    return LoginSchema(
+        user=UserSchema(**user_data),
         access_token=access_token,
     )
