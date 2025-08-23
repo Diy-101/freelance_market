@@ -1,24 +1,22 @@
-from fastapi import Header, APIRouter
-from src.bot import dp, bot
-from src.utils.logger import logger
 from typing import Annotated
-from aiogram import types
 
+from aiogram import types
+from fastapi import APIRouter, Header
+
+from src.bot import bot, dp
 from src.settings import get_settings
+from src.utils.logger import logger
 
 cfg = get_settings()
 
-
 webhook_router = APIRouter(
-    prefix="",
-    tags=["root"],
-    responses={404: {"description": "Not found!"}}
+    prefix="", tags=["root"], responses={404: {"description": "Not found!"}}
 )
+
 
 @webhook_router.post(cfg.webhook_path)
 async def bot_webhook(
-    update: dict,
-    x_telegram_bot_api_secret_token: Annotated[str, Header()]
+        update: dict, x_telegram_bot_api_secret_token: Annotated[str, Header()]
 ):
     if x_telegram_bot_api_secret_token != cfg.my_telegram_token:
         logger.error("Wrong secret token!")
