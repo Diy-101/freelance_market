@@ -1,21 +1,26 @@
-from aiogram import Dispatcher, Bot, Router
+import os
+
+from aiogram import Bot, Dispatcher, Router
+from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand, WebhookInfo
-from aiogram.client.default import DefaultBotProperties
 
+from src.settings import get_settings
 from src.utils.logger import logger
-import os
-from src.settings import get_settings, Settings
 
-cfg: Settings = get_settings()
+cfg = get_settings()
 
 telegram_router = Router(name="telegram_router")
 dp = Dispatcher()
 
 dp.include_router(telegram_router)
-bot = Bot(token=cfg.bot_token, default=DefaultBotProperties(
-    parse_mode=ParseMode.HTML,
-))
+bot = Bot(
+    token=cfg.bot_token,
+    default=DefaultBotProperties(
+        parse_mode=ParseMode.HTML,
+    ),
+)
+
 
 # Functions
 async def check_webhook(my_bot: Bot) -> WebhookInfo | None:
@@ -24,6 +29,7 @@ async def check_webhook(my_bot: Bot) -> WebhookInfo | None:
         return webhook_info
     except Exception as e:
         logger.error(f"App can't get webhook_info\nError: {e}")
+
 
 async def set_webhook(my_bot: Bot) -> None:
     current_webhook = await check_webhook(my_bot=my_bot)
@@ -45,15 +51,17 @@ async def set_webhook(my_bot: Bot) -> None:
     except Exception as e:
         logger.error(f"Can't set webhook\nError: {e}")
 
+
 async def set_commands(my_bot: Bot):
     commands = [
-        BotCommand( command="/id", description="👋 Get my ID"),
+        BotCommand(command="/id", description="👋 Get my ID"),
     ]
 
     try:
         await my_bot.set_my_commands(commands)
     except Exception as e:
         logger.error(f"Can't set commands - {e}")
+
 
 async def start_telegram():
     if os.getenv("BOT_FIRST_RUN") == "1":
