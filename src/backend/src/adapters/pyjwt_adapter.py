@@ -44,7 +44,7 @@ class PyJWTAdapter(JWTInterface):
         """Возвращает dependency для проверки JWT токена"""
 
         async def dependency(
-                credentials: HTTPAuthorizationCredentials = Depends(self._bearer),
+            credentials: HTTPAuthorizationCredentials = Depends(self._bearer),
         ) -> Dict[str, Any]:
             try:
                 payload = jwt.decode(

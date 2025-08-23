@@ -16,7 +16,7 @@ webhook_router = APIRouter(
 
 @webhook_router.post(cfg.webhook_path)
 async def bot_webhook(
-        update: dict, x_telegram_bot_api_secret_token: Annotated[str, Header()]
+    update: dict, x_telegram_bot_api_secret_token: Annotated[str, Header()]
 ):
     if x_telegram_bot_api_secret_token != cfg.my_telegram_token:
         logger.error("Wrong secret token!")
