@@ -28,3 +28,4 @@ venv
 src/backend/.env
 __pycache__
 database
+tests
