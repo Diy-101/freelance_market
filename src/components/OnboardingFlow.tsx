@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@heroui/react";
 import { ChevronRight, Users, Clock, ShieldCheck } from "lucide-react";
-import deal_duck from "@/assets/stickers/deal_duck.json";
+import modern_duck from "@/assets/stickers/modern_duck.json";
 import fast_duck from "@/assets/stickers/fast_duck.json";
 import money_duck from "@/assets/stickers/money_duck.json";
 import StickerPlayer from "./StickerPlayer";
@@ -13,7 +13,7 @@ interface OnboardingFlowProps {
 const onboardingCards = [
   {
     id: 1,
-    animation: deal_duck,
+    animation: modern_duck,
     title: "Find Perfect Freelancers",
     description:
       "Connect with skilled professionals from around the world. Browse profiles, reviews, and portfolios to find the perfect match for your project.",
