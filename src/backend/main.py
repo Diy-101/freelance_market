@@ -1,13 +1,13 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from src.utils.logger import logger
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.bot import start_telegram
+from src.database import init_models
+from src.presentation.fastapi_routers.routers import user_router
+from src.utils.logger import logger
 from src.webhook import webhook_router
-from src.auth import authx
-from src.auth.routers import user_router
-from src.database import Base, engine, init_models
 
 
 @asynccontextmanager
@@ -17,6 +17,7 @@ async def lifespan(application: FastAPI):
     await init_models()
     yield
     logger.info("⛔ Stop Application")
+
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(webhook_router)
@@ -30,7 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-authx.handle_errors(app)
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app="main:app", host="localhost", port=8000)
