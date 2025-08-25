@@ -2,7 +2,7 @@ from typing import Callable
 
 from src.domain.interfaces import JWTInterface, UserServiceInterface
 from src.domain.models.users import UserModel
-from src.domain.schemas.users import TelegramInitData, TelegramUser
+from src.domain.schemas.users import TelegramInitData, User
 from src.repositories import AbstractRepository
 from src.settings import get_settings
 from src.utils.telegram_validator import TelegramValidator
@@ -18,7 +18,7 @@ class UserService(UserServiceInterface):
 
     def __init__(
         self,
-        repository: AbstractRepository[UserModel, TelegramUser],
+        repository: AbstractRepository[UserModel, User],
         jwt_adapter: JWTInterface,
         telegram_validator: TelegramValidator,
     ):
@@ -27,19 +27,19 @@ class UserService(UserServiceInterface):
         self.telegram_validator = telegram_validator
 
     # ============= CRUD =============
-    async def create_user(self, user: TelegramUser) -> TelegramUser:
+    async def create_user(self, user: User) -> User:
         new_user = await self.repository.create(user)
         return new_user
 
-    async def get_user(self, user_id: int) -> TelegramUser | None:
+    async def get_user(self, user_id: int) -> User | None:
         user = await self.repository.get(user_id)
         if user is None:
             return None
         return user
 
     async def update_user(
-        self, user_id: int, user: TelegramUser
-    ) -> TelegramUser | None:
+        self, user_id: int, user: User
+    ) -> User | None:
         current_user = await self.repository.get(user_id)
         if current_user is None:
             return None
@@ -55,7 +55,7 @@ class UserService(UserServiceInterface):
             return await self.repository.update(user_id, fields_to_update)
         return user
 
-    async def delete_user(self, user_id: int) -> TelegramUser | None:
+    async def delete_user(self, user_id: int) -> User | None:
         return await self.repository.delete(user_id)
 
     # ============= Аутентификация и авторизация =============
@@ -72,7 +72,7 @@ class UserService(UserServiceInterface):
         except ValueError as e:
             raise ValueError(f"Can't validate initData: {e}")
 
-    def authenticate_user_from_init_data(self, init_data: str) -> TelegramUser:
+    def authenticate_user_from_init_data(self, init_data: str) -> User:
         """
         Аутентификация пользователя через Telegram initData
         """
@@ -97,7 +97,7 @@ class UserService(UserServiceInterface):
         """
         return self.jwt_adapter.token_required()
 
-    async def get_current_user_from_token(self, token_data: dict) -> TelegramUser:
+    async def get_current_user_from_token(self, token_data: dict) -> User:
         """
         Получение текущего пользователя из данных токена
         token_data приходит от JWT dependency
