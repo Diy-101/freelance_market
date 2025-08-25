@@ -27,15 +27,15 @@ class UserService(UserServiceInterface):
         self.telegram_validator = telegram_validator
 
     # ============= CRUD =============
+    async def create_user(self, user: TelegramUser) -> TelegramUser:
+        new_user = await self.repository.create(user)
+        return new_user
+
     async def get_user(self, user_id: int) -> TelegramUser | None:
         user = await self.repository.get(user_id)
         if user is None:
             return None
         return user
-
-    async def create_user(self, user: TelegramUser) -> TelegramUser:
-        new_user = await self.repository.create(user)
-        return new_user
 
     async def update_user(
         self, user_id: int, user: TelegramUser
@@ -51,7 +51,9 @@ class UserService(UserServiceInterface):
             for _, new_val in user_dict.items()
             if curr_val != new_val
         }
-        return await self.repository.update(user_id, fields_to_update)
+        if fields_to_update:
+            return await self.repository.update(user_id, fields_to_update)
+        return user
 
     async def delete_user(self, user_id: int) -> TelegramUser | None:
         return await self.repository.delete(user_id)
