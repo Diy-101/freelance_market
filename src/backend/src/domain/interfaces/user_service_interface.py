@@ -16,6 +16,23 @@ class UserServiceInterface(ABC):
         """
         raise NotImplementedError
 
+    # ============ CRUD ============
+    @abstractmethod
+    async def create_user(self, user: TelegramUser) -> TelegramUser:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_user(self, user_id: str) -> TelegramUser | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def update_user(self, user_id: str, values: TelegramUser) -> TelegramUser | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_user(self, user_id: str) -> TelegramUser | None:
+        raise NotImplementedError
+
     # ============= Аутентификация и авторизация =============
     @abstractmethod
     def check_init_data(self, init_data: str) -> TelegramInitData:
@@ -26,6 +43,10 @@ class UserServiceInterface(ABC):
 
     @abstractmethod
     def authenticate_user_from_init_data(self, init_data: str) -> TelegramUser:
+        raise NotImplementedError
+
+    @abstractmethod
+    def create_token(self, user_id) -> str:
         raise NotImplementedError
 
     @abstractmethod
