@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Callable
 
-from src.domain.schemas.users import TelegramInitData, TelegramUser
+from src.domain.schemas.users import TelegramInitData, User
 
 
 class UserServiceInterface(ABC):
@@ -16,6 +16,23 @@ class UserServiceInterface(ABC):
         """
         raise NotImplementedError
 
+    # ============ CRUD ============
+    @abstractmethod
+    async def create_user(self, user: User) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_user(self, user_id: str) -> User | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def update_user(self, user_id: str, values: User) -> User | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_user(self, user_id: str) -> User | None:
+        raise NotImplementedError
+
     # ============= Аутентификация и авторизация =============
     @abstractmethod
     def check_init_data(self, init_data: str) -> TelegramInitData:
@@ -25,7 +42,11 @@ class UserServiceInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def authenticate_user_from_init_data(self, init_data: str) -> TelegramUser:
+    def authenticate_user_from_init_data(self, init_data: str) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    def create_token(self, user_id) -> str:
         raise NotImplementedError
 
     @abstractmethod
@@ -36,7 +57,7 @@ class UserServiceInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_current_user_from_token(self, token_data: dict) -> TelegramUser:
+    async def get_current_user_from_token(self, token_data: dict) -> User:
         """
         Получение текущего пользователя из данных токена
         """

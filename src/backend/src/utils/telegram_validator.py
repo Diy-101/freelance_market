@@ -67,6 +67,8 @@ class TelegramValidator:
                     # URL-decode и парсим JSON
                     decoded_json = unquote(value)
                     result[key] = json.loads(decoded_json)
+                    result[key]["tg_id"] = result[key]["id"]
+                    del result[key]["id"]
                 except (json.JSONDecodeError, ValueError) as e:
                     print(f"Failed to parse JSON for key '{key}': {e}")
                     result[key] = (
@@ -75,6 +77,8 @@ class TelegramValidator:
             else:
                 # Обычные поля (auth_date, query_id, hash, etc.)
                 result[key] = value
+
+
 
         return TelegramInitData(**result)
 

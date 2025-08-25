@@ -14,8 +14,12 @@ export const TabNavigation = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="tab-nav fixed bottom-0 left-0 right-0 z-50">
-      <div className="flex justify-around items-center max-w-md mx-auto">
+    <div className="fixed bottom-3 left-0 right-0 z-50 flex justify-center">
+      <div
+        className="flex justify-around items-center gap-6 rounded-full px-6 py-3
+                      bg-white/80 dark:bg-gray-900/70 backdrop-blur-lg
+                      border-2 border-primary/70 shadow-xl max-w-md w-full"
+      >
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = location.pathname === tab.path;
@@ -24,10 +28,13 @@ export const TabNavigation = () => {
             <button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className={`tab-item ${isActive ? "active" : ""}`}
+              className={`relative flex flex-col items-center text-xs font-medium transition-colors
+                          ${
+                            isActive ? "text-primary" : "text-muted-foreground"
+                          }`}
             >
-              <Icon size={20} className="mb-1" />
-              <span className="text-xs font-medium">{tab.label}</span>
+              <Icon size={22} className="mb-1" />
+              <span>{tab.label}</span>
             </button>
           );
         })}

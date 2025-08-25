@@ -1,8 +1,9 @@
 from pydantic import BaseModel
-
 from src.domain.schemas.users import User
 
 
-class LoginResponse(BaseModel):
-    user: User
-    access_token: str
+class Order(BaseModel):
+    id: int
+    title: str
+    author: User
+

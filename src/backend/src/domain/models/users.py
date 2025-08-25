@@ -6,9 +6,8 @@ from src.database import Base
 class UserModel(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(
-        primary_key=True, unique=True, index=True, nullable=False
-    )
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    tg_id: Mapped[int] = mapped_column(unique=True, index=True, nullable=False)
     is_bot: Mapped[bool | None] = None
     first_name: Mapped[str]
     last_name: Mapped[str | None] = None

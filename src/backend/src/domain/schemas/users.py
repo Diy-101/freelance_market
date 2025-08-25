@@ -1,23 +1,19 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
-class TelegramUser(BaseModel):
-    id: int
-    is_bot: bool | None = None
+class User(BaseModel):
+    tg_id: int
     first_name: str
     last_name: str | None = None
     username: str | None = None
     language_code: str | None = None
-    is_premium: bool | None = None
-    added_to_attachment_menu: bool | None = None
     allows_write_to_pm: bool | None = None
     photo_url: str | None = None
-
-    model_config = ConfigDict(from_attributes=True)
 
 
 class TelegramChat(BaseModel):
     id: int
+    tg_id: int
     type: str
     title: str
     username: str | None = None
@@ -26,8 +22,8 @@ class TelegramChat(BaseModel):
 
 class TelegramInitData(BaseModel):
     query_id: str | None = None
-    user: TelegramUser | None = None
-    receiver: TelegramUser | None = None
+    user: User | None = None
+    receiver: User | None = None
     chat: TelegramChat | None = None
     chat_type: str | None = None
     chat_instance: str | None = None
