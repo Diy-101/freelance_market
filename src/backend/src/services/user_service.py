@@ -51,7 +51,7 @@ class UserService(UserServiceInterface):
             for _, new_val in user_dict.items()
             if curr_val != new_val
         }
-        return await self.repository.update(current_user.id, fields_to_update)
+        return await self.repository.update(user_id, fields_to_update)
 
     async def delete_user(self, user_id: int) -> TelegramUser | None:
         return await self.repository.delete(user_id)

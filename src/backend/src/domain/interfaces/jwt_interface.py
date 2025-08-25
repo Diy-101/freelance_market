@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable
+from typing import Any, Callable
 
 
 class JWTInterface(ABC):
@@ -11,14 +11,14 @@ class JWTInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_access_token(self, payload: str) -> str:
+    def create_access_token(self, uid: str) -> str:
         """
         Создает JWT токен доступа
         """
         raise NotImplementedError
 
     @abstractmethod
-    def token_required(self) -> Callable:
+    def token_required(self) -> Callable[..., Any]:
         """
         Зависимость для проверки JWT токена.
         Возвращает callable, который FastAPI использует в Depends()

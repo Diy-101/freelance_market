@@ -13,5 +13,5 @@ class UserRepository(SQLAlchemyRepository[UserModel, TelegramUser]):
 
     def __init__(self, factory_session: async_sessionmaker[AsyncSession]):
         super().__init__(
-            model=UserModel, schema=TelegramUser, factory_session=factory_session
+            model=UserModel, schema=TelegramUser, factory_session=factory_session, key_field="tg_id"
         )

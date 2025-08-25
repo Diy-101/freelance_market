@@ -1,8 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class TelegramUser(BaseModel):
-    id: int
+    tg_id: int
     is_bot: bool | None = None
     first_name: str
     last_name: str | None = None
@@ -13,11 +13,10 @@ class TelegramUser(BaseModel):
     allows_write_to_pm: bool | None = None
     photo_url: str | None = None
 
-    model_config = ConfigDict(from_attributes=True)
-
 
 class TelegramChat(BaseModel):
     id: int
+    tg_id: int
     type: str
     title: str
     username: str | None = None

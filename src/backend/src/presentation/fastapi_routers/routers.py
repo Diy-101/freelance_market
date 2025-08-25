@@ -30,7 +30,7 @@ async def login(
         )
     user = await user_service.update_user(user.id, new_user)
     if user is None:
-        raise HTTPException(404, detail=f"User not found in database")
+        raise HTTPException(404, detail="User not found in database")
     token = user_service.create_token(user.id)
     return LoginResponse(
         user=user,
