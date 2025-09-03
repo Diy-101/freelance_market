@@ -1,8 +1,0 @@
-from pydantic import BaseModel
-
-from src.domain.schemas.users import User
-
-
-class LoginResponse(BaseModel):
-    user: User
-    access_token: str
