@@ -15,11 +15,9 @@ export const AuthProvider = ({ children }) => {
         const response = await fetch(`${BASE_URL}/api/users/login`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain",
           },
-          body: JSON.stringify({
-            init_data: window.Telegram.WebApp.initData,
-          }),
+          body: JSON.stringify(window.Telegram.WebApp.initData),
         });
 
         if (!response.ok)
