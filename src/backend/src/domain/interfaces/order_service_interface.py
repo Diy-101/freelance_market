@@ -1,15 +1,28 @@
 from abc import ABC, abstractmethod
 
-class OrderInterface(ABC):
-    """
-    TODO: realize a order interface
-    """
+from src.domain.entities import Order
+
+
+class OrderServiceInterface(ABC):
+    """Interface for managing orders"""
+
+    # ========== CRUD ===========
     @abstractmethod
-    def __init__(self, repository):
+    async def create_order(self, order: Order) -> Order:
         raise NotImplementedError
 
-    # ========== CRUD ==========
     @abstractmethod
-    async def get_order(self, order_id: int):
+    async def get_order_by_uuid(self, order_uuid: str) -> Order | None:
         raise NotImplementedError
 
+    @abstractmethod
+    async def get_all_orders(self) -> list[Order]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def update_order_by_uuid(self, order_uuid: str, new_data: Order) -> Order:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_order_by_uuid(self, order_uuid: str) -> Order:
+        raise NotImplementedError
