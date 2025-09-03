@@ -17,8 +17,8 @@ export const TabNavigation = () => {
     <div className="fixed bottom-3 left-0 right-0 z-50 flex justify-center">
       <div
         className="flex justify-around items-center gap-6 rounded-full px-6 py-3
-                      bg-white/80 dark:bg-gray-900/70 backdrop-blur-lg
-                      border-2 border-primary/70 shadow-xl max-w-md w-full"
+                   bg-white/80 dark:bg-gray-900/70 backdrop-blur-lg
+                   border-2 border-primary/70 shadow-xl max-w-md w-full"
       >
         {tabs.map((tab) => {
           const Icon = tab.icon;
