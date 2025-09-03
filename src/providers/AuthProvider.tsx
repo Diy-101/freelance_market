@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
           headers: {
             "Content-Type": "text/plain",
           },
-          body: JSON.stringify(window.Telegram.WebApp.initData),
+          body: window.Telegram.WebApp.initData,
         });
 
         if (!response.ok)

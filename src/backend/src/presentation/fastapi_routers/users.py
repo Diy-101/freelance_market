@@ -12,7 +12,7 @@ user_router = APIRouter(
 
 @user_router.post("/login")
 async def login(
-    data_string: str = Body(),
+    data_string: str = Body(embed=False),
     user_service: UserService = Depends(get_user_service),
     telegram_service: TelegramService = Depends(get_telegram_service),
 ) -> LoginResponse:
