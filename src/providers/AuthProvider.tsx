@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     const SignIn = async () => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        const response = await fetch(`${BASE_URL}/api/auth/login`, {
+        const response = await fetch(`${BASE_URL}/api/users/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
