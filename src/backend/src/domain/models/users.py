@@ -1,4 +1,7 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import Optional
+
+from sqlalchemy import Boolean, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
 
@@ -6,14 +9,18 @@ from src.database import Base
 class UserModel(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    # SQL
+    uuid: Mapped[str] = mapped_column(primary_key=True, index=True)
     tg_id: Mapped[int] = mapped_column(unique=True, index=True, nullable=False)
-    is_bot: Mapped[bool | None] = None
-    first_name: Mapped[str]
-    last_name: Mapped[str | None] = None
-    username: Mapped[str | None] = None
-    language_code: Mapped[str | None] = None
-    is_premium: Mapped[bool | None] = None
-    allows_write_to_pm: Mapped[bool | None] = None
-    added_to_attachment_menu: Mapped[bool | None] = None
-    photo_url: Mapped[str | None] = None
+    is_bot: Mapped[Optional[bool]] = mapped_column(Boolean)
+    first_name: Mapped[str] = mapped_column(String(200))
+    last_name: Mapped[Optional[str]] = mapped_column(String(200))
+    username: Mapped[Optional[str]] = mapped_column(String(200))
+    language_code: Mapped[Optional[str]] = mapped_column(String(2))
+    is_premium: Mapped[Optional[bool]] = mapped_column(Boolean)
+    allows_write_to_pm: Mapped[Optional[bool]] = mapped_column(Boolean)
+    photo_url: Mapped[Optional[str]] = mapped_column(String(200))
+
+    # ORM
+    orders: Mapped[list["OrderModel"]] = relationship(back_populates="author")
+    skills: Mapped[list["UserSkillsModel"]] = relationship(back_populates="user")
