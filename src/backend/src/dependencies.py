@@ -2,14 +2,16 @@ from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.adapters import PyJWTAdapter
+from src.application.services import UserService
+from src.application.services.order_service import OrderService
+from src.application.services.telegram_service import TelegramService
 from src.database import create_session
 from src.domain.interfaces.jwt_interface import JWTInterface
-from src.repositories.abstract import AbstractRepository
-from src.repositories.user_repo import UserRepository
-from src.services import UserService
+from src.infrastructure.adapters.pyjwt_adapter import PyJWTAdapter
+from src.domain.interfaces.repository_interface import AbstractRepository
+from src.infrastructure.repositories.user_repo import UserRepository
+from src.infrastructure.repositories.order_repo import OrderRepository
 from src.settings import get_settings
-from src.utils.telegram_validator import TelegramValidator
 
 
 def get_jwt_adapter() -> JWTInterface:
@@ -34,8 +36,8 @@ def get_repository_factory():
             return UserRepository(session_factory)
 
         @staticmethod
-        def create_orders_repo():
-            pass
+        def create_orders_repo() -> AbstractRepository:
+            return OrderRepository(session_factory)
 
     return RepositoryFactory()
 
@@ -46,13 +48,19 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-def get_telegram_validator() -> TelegramValidator:
-    return TelegramValidator(get_settings().bot_token, max_age_seconds=1000000)
+def get_telegram_service() -> TelegramService:
+    """Получение TelegramService"""
+    return TelegramService(get_settings().bot_token)
 
 
 def get_user_service() -> UserService:
     """Получение UserService"""
     repo = get_repository_factory().create_user_repo()
     adapter = get_jwt_adapter()
-    validator = get_telegram_validator()
-    return UserService(repo, adapter, validator)
+    return UserService(repo, adapter)
+
+
+def get_order_service() -> OrderService:
+    """Получение OrderService"""
+    repo = get_repository_factory().create_orders_repo()
+    return OrderService(repo)
