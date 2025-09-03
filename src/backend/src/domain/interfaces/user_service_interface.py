@@ -1,20 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Callable
 
-from src.domain.schemas.users import TelegramInitData, User
+from src.domain.entities import User
 
 
 class UserServiceInterface(ABC):
-    """
-    Интерфейс для управдения пользователями и аутентификацией
-    """
-
-    @abstractmethod
-    def __init__(self, repository, jwt_adapter) -> None:
-        """
-        Инициализация сервиса с репозиторием и JWT адаптером
-        """
-        raise NotImplementedError
+    """Интерфейс для управдения пользователями и аутентификацией"""
 
     # ============ CRUD ============
     @abstractmethod
@@ -22,43 +13,26 @@ class UserServiceInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_user(self, user_id: str) -> User | None:
+    async def get_user_by_tg_id(self, user_id: int) -> User | None:
         raise NotImplementedError
 
     @abstractmethod
-    async def update_user(self, user_id: str, values: User) -> User | None:
+    async def get_all_users(self) -> list[User]:
         raise NotImplementedError
 
     @abstractmethod
-    async def delete_user(self, user_id: str) -> User | None:
+    async def update_user_by_tg_id(self, user_id: int, new_data: User) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_user_by_tg_id(self, user_id: int) -> User:
         raise NotImplementedError
 
     # ============= Аутентификация и авторизация =============
     @abstractmethod
-    def check_init_data(self, init_data: str) -> TelegramInitData:
-        """
-        Проверка Telegram initData
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def authenticate_user_from_init_data(self, init_data: str) -> User:
-        raise NotImplementedError
-
-    @abstractmethod
-    def create_token(self, user_id) -> str:
+    def create_token(self, user_id: int) -> str:
         raise NotImplementedError
 
     @abstractmethod
     def get_token_dependency(self) -> Callable:
-        """
-        Возвращает dependency для проверки JWT токена в FastAPI
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    async def get_current_user_from_token(self, token_data: dict) -> User:
-        """
-        Получение текущего пользователя из данных токена
-        """
         raise NotImplementedError
