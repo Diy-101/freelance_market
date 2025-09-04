@@ -5,6 +5,7 @@ export default function RequiredTelegram({ children }) {
   const [isReady, changeReady] = useState(false);
 
   useEffect(() => {
+    window.Telegram?.WebApp.ready();
     const tg = window.Telegram?.WebApp;
     const initdata = window.Telegram?.WebApp.initData;
 
