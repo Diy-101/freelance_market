@@ -1,10 +1,19 @@
 import React from "react";
+import { useState, useEffect } from "react";
 
 export default function RequiredTelegram({ children }) {
-  const _ = window.Telegram.WebApp.ready();
-  const isTelegram = window.Telegram?.WebApp.initData ? false : true;
+  const [isReady, changeReady] = useState(false);
 
-  if (!isTelegram) {
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    const initdata = window.Telegram?.WebApp.initData;
+
+    if (tg && initdata) {
+      changeReady(true);
+    }
+  }, []);
+
+  if (!isReady) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-6">
         <div className="telegram-card max-w-md text-center">
