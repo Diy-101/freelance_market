@@ -1,10 +1,7 @@
 import React from "react";
 
-export default function RequiredTelegram({ children, mock = false }) {
-  const tg = mock
-    ? { initData: "mocked" } // эмулируем initData
-    : window.Telegram?.WebApp;
-  const isTelegram = tg && tg.initData;
+export default function RequiredTelegram({ children }) {
+  const isTelegram = window.Telegram?.WebApp.initData ? false : true;
 
   if (!isTelegram) {
     return (

@@ -7,6 +7,7 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const initdata = window.Telegram.WebApp.initData;
 
   useEffect(() => {
     const SignIn = async () => {
@@ -15,9 +16,9 @@ export const AuthProvider = ({ children }) => {
         const response = await fetch(`${BASE_URL}/api/users/login`, {
           method: "POST",
           headers: {
-            "Content-Type": "text/plain",
+            "Content-Type": "application/json",
           },
-          body: window.Telegram.WebApp.initData,
+          body: JSON.stringify({ data_string: initdata }),
         });
 
         if (!response.ok)
