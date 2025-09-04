@@ -1,17 +1,15 @@
 from src.domain.entities import Order
 from src.domain.interfaces import AbstractRepository, OrderServiceInterface
 from src.domain.models import OrderModel
-from src.infrastructure.mapper import MapperFactory
 
 
 class OrderService(OrderServiceInterface):
     def __init__(self, order_repository: AbstractRepository[OrderModel, Order]):
         self._repository = order_repository
         self._order_model = OrderModel
-        self._mapper = MapperFactory.get_mapper(Order, OrderModel)
 
     async def create_order(self, order: Order) -> Order:
-        order_dict = await self._repository.create(order)
+        order_dict = await self._repository.create(order)  # TODO: change entity to dict
         return self._mapper.dict_to_entity(order_dict)
 
     async def get_order_by_uuid(self, order_uuid: str) -> Order | None:

@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable
 
 from src.domain.entities.user import User
 from src.domain.interfaces import (
@@ -7,8 +7,8 @@ from src.domain.interfaces import (
     UserServiceInterface,
 )
 from src.domain.models.users import UserModel
-from src.infrastructure.mapper import MapperFactory
 from src.settings import get_settings
+from src.utils import logger
 
 cfg = get_settings()
 
@@ -26,12 +26,11 @@ class UserService(UserServiceInterface):
     ) -> None:
         self._repository = repository
         self._jwt_adapter = jwt_adapter
-        self._mapper = MapperFactory.get_mapper(User, UserModel)
 
     # ============= CRUD =============
-    async def create_user(self, user: User) -> User:
+    async def create_user(self, user: dict[str, Any]) -> User:
         new_user_dict = await self._repository.create(user)
-        new_user = self._mapper.dict_to_entity(new_user_dict)
+        new_user = User(**new_user_dict)
         return new_user
 
     async def get_user_by_tg_id(self, user_id: int) -> User | None:
@@ -40,7 +39,7 @@ class UserService(UserServiceInterface):
         if user_dict is None:
             return None
 
-        user = self._mapper.dict_to_entity(user_dict)
+        user = User(**user_dict)
         return user
 
     async def get_all_users(self) -> list[User]:
@@ -48,31 +47,34 @@ class UserService(UserServiceInterface):
 
         users = []
         for user_dict in users_dict:
-            user = self._mapper.dict_to_entity(user_dict)
+            user = User(**user_dict)
             users.append(user)
 
         return users
 
-    async def update_user_by_tg_id(self, user_id: int, new_data: User) -> User:
+    async def update_user_by_tg_id(
+        self, user_id: int, new_data: dict[str, Any]
+    ) -> User:
         current_user_dict = await self._repository.get_by_id(user_id)
         if current_user_dict is None:
             raise ValueError(f"The user with {user_id} id doesn't exist")
 
         try:
-            new_data_dict = new_data.to_dict()  # type: ignore
-            fields_to_update = {
-                f: new_val
-                for f, curr_val in current_user_dict.items()
-                for _, new_val in new_data_dict.items()
-                if curr_val != new_val
-            }
+            new_data_dict = new_data  # type: ignore
+            fields_to_update = {}
+            for i, v in new_data_dict.items():
+                if i != "uuid" and new_data_dict[i] != current_user_dict[i]:
+                    fields_to_update[i] = v
         except Exception as e:
             raise ValueError(f"Can't map the fields: {e}")
 
+        if cfg.debug:
+            logger.debug(f"fields to update: {fields_to_update}")
+
         if fields_to_update:
             updated_user_dict = await self._repository.update(user_id, fields_to_update)
-            return self._mapper.dict_to_entity(updated_user_dict)
-        return self._mapper.dict_to_entity(current_user_dict)
+            return User(**updated_user_dict)
+        return User(**current_user_dict)
 
     async def delete_user_by_tg_id(self, user_id: int) -> User:
         try:
@@ -81,7 +83,7 @@ class UserService(UserServiceInterface):
             raise ValueError(
                 f"Can't update the user with the following {user_id} id: {e}"
             )
-        return self._mapper.dict_to_entity(deleted_user_dict)
+        return User(**deleted_user_dict)
 
     # ============= Аутентификация и авторизация =============
     def create_token(self, user_id: int) -> str:
