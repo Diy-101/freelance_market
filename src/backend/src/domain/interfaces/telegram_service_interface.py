@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-
-from src.domain.entities import InitData
+from typing import Any
 
 
 class TelegramServiceInterface(ABC):
@@ -18,7 +17,7 @@ class TelegramServiceInterface(ABC):
     @abstractmethod
     def validate_init_data(
         self, init_data: str, max_age_seconds: int = 86400
-    ) -> InitData:
+    ) -> dict[str, Any]:
         """
         Валидирует initData с указанным максимальным возрастом
         """

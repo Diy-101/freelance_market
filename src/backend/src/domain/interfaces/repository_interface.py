@@ -10,7 +10,7 @@ class AbstractRepository(ABC, Generic[ModelT, EntityT]):
         raise NotImplementedError
 
     @abstractmethod
-    async def create(self, entity: EntityT) -> dict[str, Any]:
+    async def create(self, entity: dict[str, Any]) -> dict[str, Any]:
         raise NotImplementedError
 
     @abstractmethod

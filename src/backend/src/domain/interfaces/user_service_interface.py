@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable
+from typing import Any, Callable
 
 from src.domain.entities import User
 
@@ -9,7 +9,7 @@ class UserServiceInterface(ABC):
 
     # ============ CRUD ============
     @abstractmethod
-    async def create_user(self, user: User) -> User:
+    async def create_user(self, user: dict[str, Any]) -> User:
         raise NotImplementedError
 
     @abstractmethod
@@ -21,7 +21,9 @@ class UserServiceInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def update_user_by_tg_id(self, user_id: int, new_data: User) -> User:
+    async def update_user_by_tg_id(
+        self, user_id: int, new_data: dict[str, Any]
+    ) -> User:
         raise NotImplementedError
 
     @abstractmethod
