@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from uuid import uuid4
+from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
 
@@ -14,6 +13,7 @@ class User:
     last_name: str | None = None
     username: str | None = None
     language_code: str | None = None
+    is_premium: bool = False
     allows_write_to_pm: bool | None = None
     photo_url: str | None = None
-    uuid: str = field(default_factory=lambda: str(uuid4()), init=False)
+    uuid: str | None = None
