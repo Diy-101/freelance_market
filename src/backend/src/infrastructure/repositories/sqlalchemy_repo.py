@@ -1,11 +1,10 @@
-from typing import Any
+from typing import Any, get_type_hints
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src.domain.interfaces import AbstractRepository
 from src.domain.types import EntityT, ModelT
-from src.infrastructure.mapper import BaseMapper
 
 
 class SQLAlchemyRepository(AbstractRepository[ModelT, EntityT]):
@@ -19,21 +18,25 @@ class SQLAlchemyRepository(AbstractRepository[ModelT, EntityT]):
         entity: type[EntityT],
         key_field: str,
         factory_session: async_sessionmaker[AsyncSession],
-        mapper: BaseMapper,
     ):
         self._model = model
         self._entity = entity
         self._key_field = key_field
         self._factory_session = factory_session
-        self._mapper = mapper
 
-    async def create(self, entity: EntityT) -> dict[str, Any]:
+    async def create(self, entity: dict[str, Any]) -> dict[str, Any]:
         async with self._factory_session() as session:
-            model = self._mapper.entity_to_model(entity)
+            model = self._model(**entity)  # type: ignore
             session.add(model)
             await session.commit()
             await session.refresh(model)
-            return self._mapper.model_to_dict(model)
+
+            entity_attrs = get_type_hints(self._entity)
+            return {
+                c.name: getattr(model, c.name)
+                for c in self._model.__table__.columns  # type: ignore
+                if c.name in entity_attrs
+            }
 
     async def get_by_id(self, data_id: int | str) -> dict[str, Any] | None:
         async with self._factory_session() as session:
@@ -44,7 +47,13 @@ class SQLAlchemyRepository(AbstractRepository[ModelT, EntityT]):
             model = result.scalars().first()
             if model is None:
                 return None
-            return self._mapper.model_to_dict(model)
+
+            entity_attrs = get_type_hints(self._entity)
+            return {
+                c.name: getattr(model, c.name)
+                for c in self._model.__table__.columns  # type: ignore
+                if c.name in entity_attrs
+            }
 
     async def get_all(self) -> list[dict[str, Any]]:
         async with self._factory_session() as session:
@@ -53,8 +62,13 @@ class SQLAlchemyRepository(AbstractRepository[ModelT, EntityT]):
             models = result.scalars().all()
 
             result = []
+            entity_attrs = get_type_hints(self._entity)
             for model in models:
-                model_dict = self._mapper.model_to_dict(model)
+                model_dict = {
+                    c.name: getattr(model, c.name)
+                    for c in self._model.__table__.columns  # type: ignore
+                    if c.name in entity_attrs
+                }
                 result.append(model_dict)
 
             return result
@@ -80,7 +94,12 @@ class SQLAlchemyRepository(AbstractRepository[ModelT, EntityT]):
             await session.commit()
             await session.refresh(model)
 
-            return self._mapper.model_to_dict(model)
+            entity_attrs = get_type_hints(self._entity)
+            return {
+                c.name: getattr(model, c.name)
+                for c in self._model.__table__.columns  # type: ignore
+                if c.name in entity_attrs
+            }
 
     async def delete(self, data_id: int | str) -> dict[str, Any]:
         async with self._factory_session() as session:
@@ -98,4 +117,9 @@ class SQLAlchemyRepository(AbstractRepository[ModelT, EntityT]):
             await session.delete(model)
             await session.refresh(model)
 
-            return self._mapper.model_to_dict(model)
+            entity_attrs = get_type_hints(self._entity)
+            return {
+                c.name: getattr(model, c.name)
+                for c in self._model.__table__.columns  # type: ignore
+                if c.name in entity_attrs
+            }
