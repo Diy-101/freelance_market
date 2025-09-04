@@ -1,6 +1,7 @@
 from typing import Optional
+from uuid import uuid4
 
-from sqlalchemy import Boolean, String
+from sqlalchemy import UUID, Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
@@ -10,9 +11,10 @@ class UserModel(Base):
     __tablename__ = "users"
 
     # SQL
-    uuid: Mapped[str] = mapped_column(primary_key=True, index=True)
+    uuid: Mapped[str] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, index=True, default=uuid4
+    )
     tg_id: Mapped[int] = mapped_column(unique=True, index=True, nullable=False)
-    is_bot: Mapped[Optional[bool]] = mapped_column(Boolean)
     first_name: Mapped[str] = mapped_column(String(200))
     last_name: Mapped[Optional[str]] = mapped_column(String(200))
     username: Mapped[Optional[str]] = mapped_column(String(200))
