@@ -8,6 +8,7 @@ from dataclasses_json import dataclass_json
 @dataclass_json
 @dataclass
 class User:
+    uuid: str
     tg_id: int
     first_name: str
     last_name: str | None = None
@@ -16,4 +17,3 @@ class User:
     is_premium: bool = False
     allows_write_to_pm: bool | None = None
     photo_url: str | None = None
-    uuid: str | None = None
