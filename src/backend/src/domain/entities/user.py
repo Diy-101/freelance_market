@@ -1,13 +1,13 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
 
+from src.domain.entities import BaseEntity
+
 
 @dataclass_json
 @dataclass
-class User:
+class User(BaseEntity):
     uuid: str
     tg_id: int
     first_name: str

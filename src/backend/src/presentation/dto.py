@@ -1,12 +1,16 @@
 from pydantic import BaseModel
 
-from src.domain.entities.user import User
 from src.domain.entities.order import Order
+from src.domain.entities.user import User
 
 
 class LoginResponse(BaseModel):
     user: User
     access_token: str
+
+
+class UserGetResponse(BaseModel):
+    user: User
 
 
 class OrderResponse(BaseModel):

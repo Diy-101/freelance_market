@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status
 
 from src.application.services import TelegramService, UserService
 from src.dependencies import get_telegram_service, get_user_service
-from src.presentation.dto import LoginResponse
+from src.presentation.dto import LoginResponse, UserGetResponse
 from src.settings import get_settings
 from src.utils import logger
 
@@ -68,3 +68,16 @@ async def login(
         logger.debug(f"Response: {response}")
 
     return response
+
+
+@user_router.get("/{tg_id}")
+async def get_user(tg_id: int, user_service: UserService = Depends(get_user_service)):
+    user = await user_service.get_user_by_tg_id(tg_id)
+
+    if user:
+        return UserGetResponse(user=user)
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"The user with {tg_id} telegram id didn't find",
+    )
