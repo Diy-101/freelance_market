@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   HouseIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   BriefcaseIcon,
-  UserIcon,
 } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { Avatar } from "@heroui/react";
@@ -20,7 +20,13 @@ const tabs = [
 export const TabNavigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [userPhoto, setUserPhoto] = useState(null);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const userImage = user?.photo_url;
+    userImage ? null : setUserPhoto(userImage);
+  });
 
   return (
     <div className="fixed bottom-3 left-0 right-0 z-50 flex justify-center">
@@ -65,24 +71,41 @@ export const TabNavigation = () => {
             </motion.button>
           );
         })}
-        <motion.button
-          key={"/profile"}
-          onClick={() => navigate("/profile")}
-          className={`relative flex flex-col items-center text-xs font-medium transition-colors
+        {userPhoto ? (
+          <motion.button
+            key={"/profile"}
+            onClick={() => navigate("/profile")}
+            className={`relative flex flex-col items-center text-xs font-medium transition-colors
                           ${
                             location.pathname == "/profile"
                               ? "text-primary"
                               : "text-muted-foreground"
                           }`}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Avatar
-            isBordered
-            src={user?.photo_url}
-            className="mb-1 w-5.5 h-5.5 text-tiny"
-          ></Avatar>
-          <span>Profile</span>
-        </motion.button>
+            whileTap={{ scale: 0.9 }}
+          >
+            <Avatar isBordered className="mb-1 w-5.5 h-5.5 text-tiny" />
+            <span>Profile</span>
+          </motion.button>
+        ) : (
+          <motion.button
+            key={"/profile"}
+            onClick={() => navigate("/profile")}
+            className={`relative flex flex-col items-center text-xs font-medium transition-colors
+                          ${
+                            location.pathname == "/profile"
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Avatar
+              isBordered
+              className="mb-1 w-5.5 h-5.5 text-tiny"
+              src={userPhoto}
+            />
+            <span>Profile</span>
+          </motion.button>
+        )}
       </div>
     </div>
   );
