@@ -7,7 +7,6 @@ import {
   UserIcon,
 } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
-import { Avatar } from "@heroui/react";
 import useAuth from "@/hooks/useAuth";
 
 const tabs = [
@@ -76,11 +75,10 @@ export const TabNavigation = () => {
                           }`}
           whileTap={{ scale: 0.9 }}
         >
-          <Avatar
-            isBordered
-            className="mb-1 w-5.5 h-5.5 text-tiny"
-            fallback={<UserIcon />}
+          <img
             src={user?.photo_url}
+            alt={user.firstName}
+            className="w-16 h-16 object-cover rounded-full"
           />
           <span>Profile</span>
         </motion.button>
