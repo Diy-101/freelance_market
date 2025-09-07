@@ -78,7 +78,7 @@ export const TabNavigation = () => {
           <img
             src={user?.photo_url}
             alt={user.firstName}
-            className="w-5.5 h-5.5 object-cover rounded-full border-2 border-gray-300 p-1"
+            className="w-6 h-6 object-cover rounded-full border-2 border-gray-300 p-0.5"
           />
           <span>Profile</span>
         </motion.button>
