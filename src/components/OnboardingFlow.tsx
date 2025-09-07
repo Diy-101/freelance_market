@@ -62,8 +62,12 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
           </div>
         </CardHeader>
 
-        <CardBody className="flex flex-col overflow-visible py-2 gap-32">
-          <StickerPlayer key={card.id} animationData={card.animation} />
+        <CardBody className="flex flex-col items-center overflow-visible py-2 gap-8">
+          <StickerPlayer
+            key={card.id}
+            animationData={card.animation}
+            className="w-40 h-40"
+          />
           <div className="space-y-3 mt-16">
             <h2 className="text-2xl font-bold text-foreground">
               {translations.onboarding[currentCard].title}

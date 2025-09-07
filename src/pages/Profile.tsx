@@ -85,19 +85,6 @@ export default function Profile() {
       ref={defaultPositionRef}
       className="min-h-screen bg-gradient-subtle pb-20"
     >
-      {/* Header */}
-      <div className="bg-card border-b border-border/50 p-4 sticky top-0 z-40 backdrop-blur-sm">
-        <div className="max-w-md mx-auto flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Profile</h1>
-            <p className="text-sm text-muted-foreground">Manage your account</p>
-          </div>
-          <Button size="sm" className="rounded-sm">
-            <Settings size={20} />
-          </Button>
-        </div>
-      </div>
-
       <div className="max-w-md mx-auto p-4 space-y-4">
         {/* Profile Header */}
         <Card className="telegram-card">

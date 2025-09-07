@@ -78,7 +78,7 @@ export const TabNavigation = () => {
         >
           <img
             src={user?.photo_url}
-            alt={user.firstName}
+            alt={user?.firstName}
             className={`w-6 h-6 mb-1 object-cover rounded-full border-2 border-gray-300 ${
               location.pathname == "/profile"
                 ? "text-primary"
