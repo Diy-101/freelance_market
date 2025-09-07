@@ -2,23 +2,23 @@ import React from "react";
 import Lottie from "react-lottie-player";
 
 interface StickerPlayerProps {
-  animationData: any; // сюда передаём JSON-анимацию
-  width?: number; //em
-  height?: number; //em
+  animationData: any;
+  className?: string;
 }
 
 const StickerPlayer: React.FC<StickerPlayerProps> = ({
   animationData,
-  width = 9,
-  height = 9,
+  className = "",
 }) => {
   return (
-    <Lottie
-      loop={true}
-      animationData={animationData}
-      play={true}
-      style={{ width: `${width}em`, height: `${height}em`, margin: "0 auto" }}
-    />
+    <div className={`flex justify-center ${className}`}>
+      <Lottie
+        loop
+        animationData={animationData}
+        play
+        className="w-full h-full"
+      />
+    </div>
   );
 };
 

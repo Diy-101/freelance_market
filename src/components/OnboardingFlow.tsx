@@ -43,13 +43,13 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const card = onboardingCards[currentCard];
 
   return (
-    <div className="min-h-screen bg-gradient-subtle flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-subtle flex flex-col items-center justify-center p-4">
       <Card
         key={card.id}
-        className="telegram-card w-full max-w-md mx-auto flex flex-1 flex-col"
+        className="telegram-card w-full max-w-md max-h-screen mx-auto flex flex-col overflow-hidden"
       >
         {/* Progress indicators */}
-        <CardHeader className="flex flex-1 items-start justify-center">
+        <CardHeader className="flex justify-center py-2">
           <div className="flex justify-center space-x-2">
             {onboardingCards.map((_, index) => (
               <div
@@ -62,27 +62,32 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
           </div>
         </CardHeader>
 
-        <CardBody className="flex flex-col overflow-visible py-2 gap-32">
-          <StickerPlayer key={card.id} animationData={card.animation} />
-          <div className="space-y-3 mt-16">
-            <h2 className="text-2xl font-bold text-foreground">
+        <CardBody className="flex flex-col flex-1 overflow-auto py-4 gap-6">
+          <div className="flex justify-center">
+            <StickerPlayer
+              key={card.id}
+              animationData={card.animation}
+              className="max-w-full h-auto"
+            />
+          </div>
+
+          <div className="space-y-2 mt-4 px-2 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">
               {translations.onboarding[currentCard].title}
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
               {translations.onboarding[currentCard].description}
             </p>
           </div>
         </CardBody>
 
-        <CardFooter className="flex-1 flex items-end">
-          <div className="space-y-4 flex-1">
-            <Button
-              onPress={nextCard}
-              className="telegram-button w-full h-12 text-lg"
-            >
-              {translations.onboarding[currentCard].button}
-            </Button>
-          </div>
+        <CardFooter className="flex justify-center py-4">
+          <Button
+            onPress={nextCard}
+            className="telegram-button w-full max-w-xs h-12 text-lg"
+          >
+            {translations.onboarding[currentCard].button}
+          </Button>
         </CardFooter>
       </Card>
     </div>
