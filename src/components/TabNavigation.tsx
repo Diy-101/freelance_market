@@ -1,43 +1,88 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Search, Plus, User, Briefcase } from "lucide-react";
+import {
+  HouseIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  BriefcaseIcon,
+  UserIcon,
+} from "@phosphor-icons/react";
+import { motion } from "framer-motion";
+import { Avatar } from "@heroui/react";
+import useAuth from "@/hooks/useAuth";
 
 const tabs = [
-  { icon: Home, label: "Feed", path: "/feed" },
-  { icon: Search, label: "Search", path: "/search" },
-  { icon: Plus, label: "Create", path: "/create" },
-  { icon: Briefcase, label: "My Jobs", path: "/jobs" },
-  { icon: User, label: "Profile", path: "/profile" },
+  { icon: HouseIcon, label: "Feed", path: "/feed" },
+  { icon: MagnifyingGlassIcon, label: "Search", path: "/search" },
+  { icon: PlusIcon, label: "Create", path: "/create", special: true },
+  { icon: BriefcaseIcon, label: "My Jobs", path: "/jobs" },
 ];
 
 export const TabNavigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <div className="fixed bottom-3 left-0 right-0 z-50 flex justify-center">
       <div
-        className="flex justify-around items-center gap-6 rounded-full px-6 py-3
-                   bg-white/80 dark:bg-gray-900/70 backdrop-blur-lg
-                   border-2 border-primary/70 shadow-xl max-w-md w-full"
+        className="flex justify-around items-center gap-4 rounded-full px-4 py-2
+                   bg-white/90 dark:bg-gray-900/80 backdrop-blur-lg
+                   border border-gray-200 dark:border-gray-700
+                   shadow-lg max-w-sm w-full"
       >
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = location.pathname === tab.path;
 
+          if (tab.special) {
+            return (
+              <motion.button
+                key={tab.path}
+                onClick={() => navigate(tab.path)}
+                className="flex items-center justify-center rounded-full
+                           bg-primary text-white shadow-lg
+                           w-14 h-14 -mt-8"
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.1 }}
+              >
+                <Icon size={28} />
+              </motion.button>
+            );
+          }
+
           return (
-            <button
+            <motion.button
               key={tab.path}
               onClick={() => navigate(tab.path)}
               className={`relative flex flex-col items-center text-xs font-medium transition-colors
                           ${
                             isActive ? "text-primary" : "text-muted-foreground"
                           }`}
+              whileTap={{ scale: 0.9 }}
             >
               <Icon size={22} className="mb-1" />
               <span>{tab.label}</span>
-            </button>
+            </motion.button>
           );
         })}
+        <motion.button
+          key={"/profile"}
+          onClick={() => navigate("/profile")}
+          className={`relative flex flex-col items-center text-xs font-medium transition-colors
+                          ${
+                            location.pathname == "/profile"
+                              ? "text-primary"
+                              : "text-muted-foreground"
+                          }`}
+          whileTap={{ scale: 0.9 }}
+        >
+          <Avatar
+            isBordered
+            src={user?.photo_url}
+            className="mb-1 w-5.5 h-5.5 text-tiny"
+          ></Avatar>
+          <span>Profile</span>
+        </motion.button>
       </div>
     </div>
   );

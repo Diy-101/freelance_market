@@ -9,7 +9,7 @@ export const Providers = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <HeroUIProvider>
-      <RequiredTelegram>
+      <RequiredTelegram mock={true}>
         <LanguageProvider>
           <AuthProvider>
             <QueryClientProvider client={queryClient}>

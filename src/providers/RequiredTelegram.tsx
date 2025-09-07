@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-export default function RequiredTelegram({ children }) {
+export default function RequiredTelegram({ children, mock = false }) {
   const [isReady, changeReady] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function RequiredTelegram({ children }) {
     }
   }, []);
 
-  if (!isReady) {
+  if (!isReady && !mock) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-6">
         <div className="telegram-card max-w-md text-center">
@@ -23,7 +23,7 @@ export default function RequiredTelegram({ children }) {
           </h2>
           <p className="mb-6">Пожалуйста, откройте его через нашего бота:</p>
           <a
-            href="https://t.me/your_bot_username/startapp"
+            href="https://t.me/booproty_bot/startapp"
             target="_blank"
             rel="noopener noreferrer"
             className="telegram-button inline-block"

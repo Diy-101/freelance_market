@@ -1,18 +1,18 @@
 import { useState, useEffect, createContext } from "react";
+import { AuthContextInterface } from "@/types";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext<AuthContextInterface | null>(null);
 
 export const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const initdata = window.Telegram.WebApp.initData;
 
   useEffect(() => {
     const SignIn = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await fetch(`${BASE_URL}/api/users/login`, {
           method: "POST",
           headers: {
@@ -25,10 +25,11 @@ export const AuthProvider = ({ children }) => {
           throw new Error(`HTTP request Error: ${response.status}`);
 
         const data = await response.json();
-        setUserData(data.user);
+        const user = data.user;
+        setUser(user);
         localStorage.setItem("token", data.access_token);
       } catch (error) {
-        setUserData(null);
+        setUser(null);
         console.error(error);
       } finally {
         setLoading(false);
@@ -65,6 +66,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ userData }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 };
