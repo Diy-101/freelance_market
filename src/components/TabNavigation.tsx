@@ -53,7 +53,7 @@ export const TabNavigation = () => {
             <motion.button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className={`relative flex flex-col items-center text-xs font-medium transition-colors
+              className={`relative flex flex-col items-center text-xs font-medium transition-colors w-8 h-8
                           ${
                             isActive ? "text-primary" : "text-muted-foreground"
                           }`}
@@ -67,7 +67,7 @@ export const TabNavigation = () => {
         <motion.button
           key={"/profile"}
           onClick={() => navigate("/profile")}
-          className={`relative flex flex-col items-center text-xs font-medium transition-colors
+          className={`relative flex flex-col items-center text-xs font-medium transition-colors w-8 h-8
                           ${
                             location.pathname == "/profile"
                               ? "text-primary"
@@ -78,7 +78,7 @@ export const TabNavigation = () => {
           <img
             src={user?.photo_url}
             alt={user.firstName}
-            className="w-6 h-6 object-cover rounded-full border-2 border-gray-300 p-0.5"
+            className="w-6 h-6 object-cover rounded-full border-2 border-gray-300 p-0.2"
           />
           <span>Profile</span>
         </motion.button>
