@@ -8,6 +8,7 @@ import {
 } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
+import { text } from "stream/consumers";
 
 const tabs = [
   { icon: HouseIcon, label: "Feed", path: "/feed" },
@@ -67,7 +68,7 @@ export const TabNavigation = () => {
         <motion.button
           key={"/profile"}
           onClick={() => navigate("/profile")}
-          className={`relative flex flex-col items-center text-xs font-medium transition-colors w-8 h-8
+          className={`relative flex flex-col items-center text-xs font-medium transition-colors
                           ${
                             location.pathname == "/profile"
                               ? "text-primary"
@@ -78,7 +79,11 @@ export const TabNavigation = () => {
           <img
             src={user?.photo_url}
             alt={user.firstName}
-            className="w-6 h-6 object-cover rounded-full border-2 border-gray-300 p-0.2"
+            className={`w-6 h-6 object-cover rounded-full border-2 border-gray-300 ${
+              location.pathname == "/profile"
+                ? "text-primary"
+                : "text-muted-foreground"
+            }`}
           />
           <span>Profile</span>
         </motion.button>
