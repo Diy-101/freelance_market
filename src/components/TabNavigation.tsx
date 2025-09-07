@@ -54,7 +54,7 @@ export const TabNavigation = () => {
             <motion.button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className={`relative flex flex-col items-center text-xs font-medium transition-colors w-8 h-8
+              className={`relative flex flex-col items-center text-xs font-medium transition-colors
                           ${
                             isActive ? "text-primary" : "text-muted-foreground"
                           }`}
