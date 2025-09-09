@@ -8,7 +8,6 @@ import {
 } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import useAuth from "@/hooks/useAuth";
-import { text } from "stream/consumers";
 
 const tabs = [
   { icon: HouseIcon, label: "Feed", path: "/feed" },
@@ -76,15 +75,26 @@ export const TabNavigation = () => {
                           }`}
           whileTap={{ scale: 0.9 }}
         >
-          <img
-            src={user?.photo_url}
-            alt={user?.firstName}
-            className={`w-6 h-6 mb-1 object-cover rounded-full border-2  ${
-              location.pathname == "/profile"
-                ? "border-primary"
-                : "border-gray-300"
-            }`}
-          />
+          {user?.photo_url ? (
+            <img
+              src={user?.photo_url}
+              alt={user?.firstName}
+              className={`w-6 h-6 mb-1 object-cover rounded-full border-2  ${
+                location.pathname == "/profile"
+                  ? "border-primary"
+                  : "border-gray-300"
+              }`}
+            />
+          ) : (
+            <UserIcon
+              weight="bold"
+              className={`fill-current w-6 h-6 mb-1 object-cover rounded-full border-2  ${
+                location.pathname == "/profile"
+                  ? "border-primary"
+                  : "border-gray-400"
+              }`}
+            />
+          )}
           <span>Profile</span>
         </motion.button>
       </div>
