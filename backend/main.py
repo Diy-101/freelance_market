@@ -25,7 +25,10 @@ app.include_router(user_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://freelance-market-chi.vercel.app", "http://localhost:8080"],
+    allow_origins=[
+        "https://freelance-market-chi.vercel.app",
+        "http://localhost:8080",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
