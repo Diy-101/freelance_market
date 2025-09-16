@@ -10,3 +10,4 @@ pytest-asyncio
 httpx
 black
 dataclasses_json
+pyjwt

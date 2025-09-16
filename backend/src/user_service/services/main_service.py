@@ -3,9 +3,9 @@ from fastapi import HTTPException, status
 
 from src.dependencies import get_repository
 from src.settings import get_settings
-from src.user_service.dependencies import get_pyjwt_service
 from src.user_service.models.users import UserModel
 from src.user_service.schemas.users import LoginResponse, User
+from src.user_service.services.pyjwt_service import PyJWTService
 from src.utils.logger import logger
 
 cfg = get_settings()
@@ -20,7 +20,7 @@ class MainUserService:
         self,
     ) -> None:
         self._repository = get_repository(UserModel, User, "tg_id")
-        self._jwt_service = get_pyjwt_service()
+        self._jwt_service = PyJWTService()
 
     # ============= CRUD =============
     async def create_user(self, user: User) -> User:
@@ -79,8 +79,11 @@ class MainUserService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Can't parse initData: {e}",
             )
+        web_app_user_dict = web_app_user.model_dump()
+        web_app_user_dict["tg_id"] = web_app_user_dict["id"]
+        del web_app_user_dict["id"]
 
-        return User(**web_app_user.model_dump())
+        return User(**web_app_user_dict)
 
     def create_token(self, tg_id: str) -> str:
         return self._jwt_service.create_access_token(tg_id)
