@@ -10,7 +10,7 @@ class LoginResponse(BaseModel):
 
 
 class UserGetResponse(BaseModel):
-    user: User
+    user: User | None = None
 
 
 class OrderResponse(BaseModel):

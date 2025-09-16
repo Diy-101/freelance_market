@@ -3,9 +3,9 @@ import Index from "@/pages/Index";
 import Feed from "@/pages/Feed";
 import Search from "@/pages/Search";
 import CreateOrder from "@/pages/CreateOrder";
-import Profile from "@/pages/Profile";
 import MyJobs from "@/pages/MyJobs";
 import NotFound from "@/pages/NotFound";
+import Profile from "@/pages/NewProfile";
 
 const routers = createBrowserRouter([
   {
