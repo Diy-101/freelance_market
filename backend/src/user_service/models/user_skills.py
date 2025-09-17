@@ -1,6 +1,5 @@
 from sqlalchemy import ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
+from sqlalchemy.orm import Mapped, mapped_column
 from src.database import Base
 
 
@@ -12,6 +11,3 @@ class UserSkillsModel(Base):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.uuid"))
     name: Mapped[str] = mapped_column(String(100))
     icon: Mapped[str | None] = mapped_column(String(200), nullable=True)
-
-    # ORM
-    user: Mapped["UserModel"] = relationship(back_populates="skills")

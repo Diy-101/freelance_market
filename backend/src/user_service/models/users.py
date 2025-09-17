@@ -1,7 +1,7 @@
 from typing import Optional
 
 from sqlalchemy import Boolean, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from src.database import Base
 
 
@@ -18,6 +18,3 @@ class UserModel(Base):
     is_premium: Mapped[Optional[bool]] = mapped_column(Boolean)
     allows_write_to_pm: Mapped[Optional[bool]] = mapped_column(Boolean)
     photo_url: Mapped[Optional[str]] = mapped_column(String(200))
-
-    # ORM
-    skills: Mapped[list["UserSkillsModel"]] = relationship(back_populates="user")
