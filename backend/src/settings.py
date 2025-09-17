@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str
     jwt_adapter: str
     mock_user: str
-    model_config = SettingsConfigDict(env_file="../../.env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file="../.env", env_file_encoding="utf-8")
 
 
 @lru_cache
