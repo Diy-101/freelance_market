@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Body, Depends, HTTPException, Path
-
 from src.settings import get_settings
 from src.user_service.dependencies import get_main_service
 from src.user_service.schemas.users import LoginResponse, User
@@ -13,7 +12,7 @@ user_router = APIRouter(
 )
 
 
-@user_router.post("/", response_model=User)
+@user_router.post("/")
 async def create_user(
     user: User = Body(...),
     main_service: MainUserService = Depends(get_main_service),
