@@ -2,7 +2,6 @@ from typing import Optional
 
 from sqlalchemy import Boolean, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
 from src.database import Base
 
 
@@ -21,5 +20,4 @@ class UserModel(Base):
     photo_url: Mapped[Optional[str]] = mapped_column(String(200))
 
     # ORM
-    orders: Mapped[list["OrderModel"]] = relationship(back_populates="author")
     skills: Mapped[list["UserSkillsModel"]] = relationship(back_populates="user")

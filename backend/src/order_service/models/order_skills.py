@@ -12,6 +12,3 @@ class OrderSkillsModel(Base):
     order_id: Mapped[int] = mapped_column(ForeignKey("orders.uuid"))
     name: Mapped[str] = mapped_column(String(100))
     icon: Mapped[str | None] = mapped_column(String(200), nullable=True)
-
-    # ORM
-    order: Mapped["OrderModel"] = relationship(back_populates="skills")
