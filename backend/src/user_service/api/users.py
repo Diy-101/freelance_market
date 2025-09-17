@@ -3,6 +3,7 @@ from src.settings import get_settings
 from src.user_service.dependencies import get_main_service
 from src.user_service.schemas.users import LoginResponse, User
 from src.user_service.services import MainUserService
+from src.utils import logger
 
 cfg = get_settings()
 
@@ -57,7 +58,8 @@ async def delete_user(
 
 @user_router.post("/login")
 async def login(
-    init_data: str = Body(embed=True),
+    init_data: str = Body(..., embed=True),
     main_service: MainUserService = Depends(get_main_service),
 ) -> LoginResponse:
+    logger.info(f"InitData: {init_data}")
     return await main_service.login_user(init_data=init_data)
