@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class User(BaseModel):
@@ -12,6 +12,8 @@ class User(BaseModel):
     is_premium: Optional[bool] = None
     allows_write_to_pm: Optional[bool] = None
     photo_url: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class LoginResponse(BaseModel):
