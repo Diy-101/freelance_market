@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data_string: initdata }),
+          body: JSON.stringify({ init_data: initdata }),
         });
 
         if (!response.ok)

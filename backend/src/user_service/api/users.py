@@ -58,7 +58,7 @@ async def delete_user(
 
 @user_router.post("/login")
 async def login(
-    init_data: str = Body(embed=True),
+    init_data: str = Body(..., embed=True),
     main_service: MainUserService = Depends(get_main_service),
 ) -> LoginResponse:
     return await main_service.login_user(init_data=init_data)
