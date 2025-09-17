@@ -1,3 +1,4 @@
+import sys
 from functools import lru_cache
 from os import getenv
 
@@ -8,15 +9,15 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    bot_token = getenv("BOT_TOKEN")
-    webhook_path = getenv("WEBHOOK_PATH")
-    webhook_url = getenv("WEBHOOK_URL")
-    my_telegram_token = getenv("MY_TELEGRAM_TOKEN")
-    database_url = getenv("DATABASE_URL")
-    jwt_secret_key = getenv("JWT_SECRET_KEY")
-    jwt_algorithm = getenv("JWT_ALGORITHM")
-    jwt_adapter = getenv("JWT_ADAPTER")
-    debug = getenv("DEBUG")
+    bot_token: str = getenv("BOT_TOKEN")
+    webhook_path: str = getenv("WEBHOOK_PATH")
+    webhook_url: str = getenv("WEBHOOK_URL")
+    my_telegram_token: str = getenv("MY_TELEGRAM_TOKEN")
+    database_url: str = getenv("DATABASE_URL")
+    jwt_secret_key: str = getenv("JWT_SECRET_KEY")
+    jwt_algorithm: str = getenv("JWT_ALGORITHM")
+    jwt_adapter: str = getenv("JWT_ADAPTER")
+    debug: bool = getenv("DEBUG")
 
 
 @lru_cache
@@ -24,4 +25,9 @@ def get_settings() -> Settings:
     """
     Get app settings
     """
-    return Settings()  # type: ignore
+    try:
+        settings = Settings()  # type: ignore
+    except Exception:
+        print("Environmental variables didn't set")
+        sys.exit(1)
+    return settings
