@@ -83,6 +83,7 @@ class MainUserService:
         if web_app_user is None:
             raise ValueError("User is not in InitData")
         web_app_user_dict = web_app_user.model_dump()
+        logger.debug(web_app_user_dict)
         web_app_user_dict["tg_id"] = web_app_user_dict["id"]
         del web_app_user_dict["id"]
 
