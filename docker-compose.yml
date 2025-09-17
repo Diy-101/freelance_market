@@ -1,6 +1,9 @@
 services:
   backend:
     build: ./backend
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     expose:
       - "8000"
     restart: unless-stopped
