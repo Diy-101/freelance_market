@@ -71,7 +71,7 @@ class MainUserService:
     # ========== Auth ===========
     def check_init_data(self, init_data: str) -> User:
         try:
-            web_app_user = safe_parse_webapp_init_data(
+            web_app_init_data = safe_parse_webapp_init_data(
                 init_data=init_data, token=cfg.bot_token
             )
         except Exception as e:
@@ -79,6 +79,9 @@ class MainUserService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Can't parse initData: {e}",
             )
+        web_app_user = web_app_init_data.user
+        if web_app_user is None:
+            raise ValueError("User is not in InitData")
         web_app_user_dict = web_app_user.model_dump()
         web_app_user_dict["tg_id"] = web_app_user_dict["id"]
         del web_app_user_dict["id"]
