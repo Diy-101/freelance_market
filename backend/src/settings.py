@@ -1,13 +1,11 @@
 import sys
 from functools import lru_cache
 from os import getenv
-from pathlib import Path
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-env_path = Path("..") / ".env"
-load_dotenv(dotenv_path=env_path, encoding="utf-8")
+load_dotenv()
 
 
 class Settings(BaseSettings):
@@ -28,7 +26,7 @@ def get_settings() -> Settings:
     """
     try:
         settings = Settings()  # type: ignore
-    except Exception:
-        print("Environmental variables didn't set")
+    except Exception as e:
+        print(f"Environmental variables didn't set: {e}")
         sys.exit(1)
     return settings
