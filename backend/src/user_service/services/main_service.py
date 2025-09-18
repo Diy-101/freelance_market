@@ -96,14 +96,29 @@ class MainUserService:
         return self._jwt_service.token_required()
 
     async def login_user(self, init_data: str):
-        user = self.check_init_data(init_data=init_data)
-        tg_id = user.tg_id
+        try:
+            user = self.check_init_data(init_data=init_data)
+            tg_id = user.tg_id
+        except Exception as e:
+            logger.debug(f"Error during checking init_data from frontend: {e}")
+            raise
 
-        if await self.get_user(tg_id=tg_id):
-            user = await self.update_user(tg_id=tg_id, user=user)
-        else:
-            user = await self.create_user(user=user)
+        try:
+            if await self.get_user(tg_id=tg_id):
+                user = await self.update_user(tg_id=tg_id, user=user)
+            else:
+                user = await self.create_user(user=user)
+        except Exception as e:
+            logger.debug(f"Database error: {e}")
+            raise
 
-        access_token = self.create_token(str(user.tg_id))
+        try:
+            access_token = self.create_token(str(user.tg_id))
+        except Exception as e:
+            logger.debug(f"Can't make access_token: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Can't make access_token: {e}",
+            )
 
         return LoginResponse(user=user, access_token=access_token)
