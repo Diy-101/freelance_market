@@ -1,11 +1,13 @@
 import sys
 from functools import lru_cache
 from os import getenv
+from pathlib import Path
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-load_dotenv()
+env_path = Path("..") / ".env"
+load_dotenv(dotenv_path=env_path, encoding="utf-8")
 
 
 class Settings(BaseSettings):
@@ -16,7 +18,6 @@ class Settings(BaseSettings):
     database_url: str = getenv("DATABASE_URL")
     jwt_secret_key: str = getenv("JWT_SECRET_KEY")
     jwt_algorithm: str = getenv("JWT_ALGORITHM")
-    jwt_adapter: str = getenv("JWT_ADAPTER")
     debug: bool = getenv("DEBUG")
 
 
