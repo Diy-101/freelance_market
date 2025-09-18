@@ -31,13 +31,7 @@ class MainUserService:
         return created
 
     async def get_user(self, tg_id: int) -> User | None:
-        user = await self._repository.get_by_id(tg_id)
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"The user with {tg_id} telegram id hasn't found",
-            )
-        return user
+        return await self._repository.get_by_id(tg_id)
 
     async def get_all_users(self) -> list[User]:
         return await self._repository.get_all()
