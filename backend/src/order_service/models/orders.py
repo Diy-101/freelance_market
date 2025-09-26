@@ -4,7 +4,7 @@ from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
-from src.domain.value_objects import OrderStatus
+from src.order_service.schemas.orders import OrderStatus
 
 
 class OrderModel(Base):
@@ -23,3 +23,4 @@ class OrderModel(Base):
     # ORM
     author: Mapped["UserModel"] = relationship(back_populates="orders")
     skills: Mapped[list["OrderSkillsModel"]] = relationship(back_populates="order")
+    proposals: Mapped[list["ProposalModel"]] = relationship(back_populates="order")

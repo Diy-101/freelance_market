@@ -1,10 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from src.application.services.order_service import OrderService
 from src.dependencies import get_order_service
-from src.domain.entities.order import Order
-from src.domain.value_objects.order_status import OrderStatus
-from src.presentation.dto import OrderCreateRequest, OrderResponse, OrderUpdateRequest
+from src.order_service.schemas.orders import (
+    Order,
+    OrderCreateRequest,
+    OrderResponse,
+    OrderStatus,
+    OrderUpdateRequest,
+)
+from src.order_service.services.order_service import OrderService
 
 order_router = APIRouter(
     prefix="/api/orders",

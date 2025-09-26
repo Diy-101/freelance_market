@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, Depends, HTTPException, Path
 
 from src.settings import get_settings
-from src.user_service.dependencies import get_main_service
+from src.dependencies import get_main_service
 from src.user_service.schemas.users import LoginResponse, User
 from src.user_service.services import MainUserService
 

@@ -92,3 +92,14 @@ class SQLAlchemyRepository(Generic[ModelT, SchemasT]):
             await session.delete(model)
             await session.refresh(model)
             return self._schema.model_validate(model)
+
+
+def get_repository(
+    model: type[ModelT], schema: type[SchemasT], key_field: str
+) -> SQLAlchemyRepository[ModelT, SchemasT]:
+    """Factory function to create SQLAlchemy repository instances"""
+    from src.database import create_session
+
+    return SQLAlchemyRepository(
+        model=model, schema=schema, key_field=key_field, factory_session=create_session
+    )

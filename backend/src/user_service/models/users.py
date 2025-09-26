@@ -23,3 +23,5 @@ class UserModel(Base):
     # ORM
     orders: Mapped[list["OrderModel"]] = relationship(back_populates="author")
     skills: Mapped[list["UserSkillsModel"]] = relationship(back_populates="user")
+    proposals: Mapped[list["ProposalModel"]] = relationship(back_populates="freelancer")
+    notifications: Mapped[list["NotificationModel"]] = relationship(back_populates="user")

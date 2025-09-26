@@ -1,7 +1,7 @@
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 from fastapi import HTTPException, status
 
-from src.dependencies import get_repository
+from src.repository import get_repository
 from src.settings import get_settings
 from src.user_service.models.users import UserModel
 from src.user_service.schemas.users import LoginResponse, User
